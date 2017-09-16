@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/drawerListGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_first_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Enroll Students" />
+        <item
+            android:id="@+id/nav_second_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="View Student List" />
+
+        <item
+            android:id="@+id/nav_fourth_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Attendance" />
+        <item
+            android:id="@+id/nav_fifth_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Class Assignments" />
+        <item
+            android:id="@+id/nav_sixth_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Class Quizzes" />
+
+        <item
+            android:id="@+id/nav_seventh_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Class Tests" />
+        <item
+            android:id="@+id/nav_eigth_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Class Exams" />
+        <item
+            android:id="@+id/nav_ninth_layout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Class Statistics" />
+
+
+    </group>
+
+
+
+</menu>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "158754984007",
+    "firebase_url": "https://tnm-database.firebaseio.com",
+    "project_id": "tnm-database",
+    "storage_bucket": "tnm-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158754984007:android:d7a6fdbff5cfe95c",
+        "android_client_info": {
+          "package_name": "com.example.ammar.teacherandmev10"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158754984007-mat4blnolnm5mvhkn8atutvfvq50vu15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfTyr0qFhrsoBryZYJLdoMJvdWLKMXtDc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

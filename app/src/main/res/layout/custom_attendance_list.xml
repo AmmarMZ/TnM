@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="25dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:src="@android:color/holo_green_light" />
+
+    <TextView
+        android:id="@+id/studentNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:text="  Student Name"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/pres_abs_sick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="  Present/absent/sick          "
+        android:textSize="14dp"
+        android:textStyle="italic" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical|end"
+        android:background="@android:color/transparent"
+        android:elevation="24dp"
+        android:foregroundGravity="right|clip_horizontal"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ic_more_vert_black_24dp"
+        android:tint="@android:color/darker_gray" />
+
+
+</LinearLayout>

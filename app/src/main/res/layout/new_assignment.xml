@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ffffff"
+    >
+
+
+    <EditText
+        android:id="@+id/assignmentNameInput"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@+id/assignmentNameText"
+        android:layout_below="@+id/assignmentNameText"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="@string/assignmentExampleHint"
+        android:inputType="textShortMessage" />
+
+    <TextView
+        android:id="@+id/assignmentNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="18dp"
+        android:text="@string/assignmentName"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/assignmentPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="@string/assignmentWeight"
+        android:textSize="18sp"
+        android:layout_below="@+id/assignmentNameInput"
+        android:layout_alignStart="@+id/assignmentNameInput" />
+
+
+    <EditText
+        android:id="@+id/assignmentPercentageInput"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@+id/assignmentPercentage"
+        android:layout_below="@+id/assignmentPercentage"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="@string/exampleWeight"
+        android:inputType="numberSigned|numberDecimal" />
+
+    <TextView
+        android:id="@+id/assignedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:text="@string/assignedDate"
+        android:textSize="18sp"
+        android:layout_below="@+id/assignmentPercentageInput"
+        android:layout_alignStart="@+id/assignmentPercentageInput" />
+
+    <EditText
+        android:id="@+id/assignedDateInput"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@+id/assignedDate"
+        android:layout_below="@+id/assignedDate"
+        android:layout_marginTop="11dp"
+        android:ems="10"
+        android:focusable="false"
+        android:gravity="top"
+        android:hint="@string/assignedDateHint"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/dueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/assignedDateInput"
+        android:layout_below="@+id/assignedDateInput"
+        android:layout_marginTop="21dp"
+        android:text="@string/dueDate"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/dueDateInput"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="@string/assignedDateHint"
+        android:inputType="textMultiLine"
+        android:layout_below="@+id/dueDate"
+        android:focusable="false"
+        android:layout_alignStart="@+id/dueDate" />
+
+    <Button
+        android:id="@+id/addAssignmentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/createAssignment"
+        android:layout_marginBottom="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/assignmentPercentage" />
+
+    <CalendarView
+        android:id="@+id/calendarViewAssignment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addAssignmentButton"
+        android:layout_centerHorizontal="true"
+        android:alpha="255"
+        android:background="@color/common_google_signin_btn_text_light_disabled"
+        android:backgroundTintMode="src_atop"
+        android:visibility="visible" />
+
+</RelativeLayout>

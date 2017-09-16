@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/quizTestExamNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:text="@string/quizName"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/quizTestExamNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/quizTestExamNameText"
+        android:layout_below="@+id/quizTestExamNameText"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="@string/quizNameExample"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/quizTestExamWeightInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/quizTestExamNameInput"
+        android:layout_below="@+id/quizTestExamNameInput"
+        android:layout_marginTop="74dp"
+        android:ems="10"
+        android:hint="@string/exampleWeight"
+        android:inputType="numberSigned|numberDecimal"
+        tools:clickable="true" />
+
+    <TextView
+        android:id="@+id/quizTestExamWeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/quizTestExamWeightInput"
+        android:layout_below="@+id/quizTestExamNameInput"
+        android:layout_marginTop="32dp"
+        android:text="@string/quiz_weight"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/quizTestExamDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/quizTestExamWeightInput"
+        android:layout_below="@+id/quizTestExamWeightInput"
+        android:layout_marginTop="41dp"
+        android:text="@string/dayOfQuiz"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/quizTestExamDateInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/quizTestExamDateText"
+        android:layout_below="@+id/quizTestExamDateText"
+        android:layout_marginTop="13dp"
+        android:focusable="false"
+        android:ems="10"
+        android:inputType="textPersonName"
+         />
+
+    <Button
+        android:id="@+id/quizTestExamButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/quizTestExamDateInput"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="49dp"
+        android:text="@string/createQuiz" />
+
+    <CalendarView
+        android:id="@+id/quizTestExamCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quizTestExamNameInput"
+        android:layout_alignStart="@+id/quizTestExamWeightInput" />
+</RelativeLayout>
