@@ -121,11 +121,14 @@ public class NewQuizTestExam extends Fragment
                     toUpload.setAssignedDate(todaysDate);
                     toUpload.setDueDate(dateInput.getText().toString());
 
-                    currentCourse.addValueEventListener(new ValueEventListener() {
+                    final String name = nameInput.getText().toString();
+                    final Double weight = Double.parseDouble(weightInput.getText().toString());
+                    currentCourse.addValueEventListener(new ValueEventListener()
+                    {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            currentCourse.child("quizzes").child(nameInput.getText().toString()).setValue(toUpload);
-
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            currentCourse.child("quizzes").child(name).setValue(toUpload);
 
                         }
 
@@ -135,24 +138,29 @@ public class NewQuizTestExam extends Fragment
                         }
                     });
 
+                    final DatabaseReference db = currentCourse.child("classList");
                     currentCourse.child("classList").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                            setQuizTestExam(currentCourse.child("classList"),iterator,nameInput.getText().toString(),Double.parseDouble(weightInput.getText().toString()));
+
+                            setQuizTestExam(db,iterator,name,weight);
                             weightInput.setText("");
                             dateInput.setText("");
                             nameInput.setText("");
-                            Toast.makeText(getActivity(), R.string.quiz_succ_add,
-                                    Toast.LENGTH_SHORT).show();
+
                         }
+
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
 
                         }
                     });
+
                 }
+                DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerQuizzes()).addToBackStack(null).commit();
+
             }
         });
 
