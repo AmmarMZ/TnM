@@ -38,8 +38,7 @@ public class NewQuizTestExam extends Fragment
 {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
-        int index = DynamicCourseView.fm.getBackStackEntryCount() - 1;
-        String tag = DynamicCourseView.fm.getBackStackEntryAt(index).getName();
+
 
 
         final View myView = inflater.inflate(R.layout.new_quiz_test_exam,container,false);
@@ -56,6 +55,8 @@ public class NewQuizTestExam extends Fragment
         final Button createQuiz = (Button) myView.findViewById(R.id.quizTestExamButton);
         quizTestExamCalendar.setVisibility(View.INVISIBLE);
 
+        int index = DynamicCourseView.fm.getBackStackEntryCount() - 1;
+        final String tag = DynamicCourseView.fm.getBackStackEntryAt(index).getName();
 
         if (tag.equals("quizzes"))
         {
@@ -66,6 +67,7 @@ public class NewQuizTestExam extends Fragment
         {
             ((DynamicCourseView) getActivity()).setActionBarTitle("New Test");
             nameText.setText(R.string.test_name);
+            nameInput.setHint(R.string.test_hint);
             weightText.setText(R.string.test_weight);
             dateText.setText(R.string.test_date);
         }
@@ -73,6 +75,7 @@ public class NewQuizTestExam extends Fragment
         {
             ((DynamicCourseView) getActivity()).setActionBarTitle("New Exam");
             nameText.setText(R.string.exam_name);
+            nameInput.setHint(R.string.exam_hint);
             weightText.setText(R.string.exam_weight);
             dateText.setText(R.string.exam_date);
         }
@@ -157,7 +160,7 @@ public class NewQuizTestExam extends Fragment
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot)
                         {
-                            currentCourse.child("quizzes").child(name).setValue(toUpload);
+                            currentCourse.child(tag).child(name).setValue(toUpload);
 
                         }
 
@@ -173,7 +176,7 @@ public class NewQuizTestExam extends Fragment
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
 
-                            setQuizTestExam(db,iterator,name,weight);
+                            setQuizTestExam(db,iterator,name,weight,tag);
                             weightInput.setText("");
                             dateInput.setText("");
                             nameInput.setText("");
@@ -188,7 +191,22 @@ public class NewQuizTestExam extends Fragment
                     });
 
                 }
-                DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerQuizzes()).addToBackStack(null).commit();
+                if (tag.equals("quizzes"))
+                {
+                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerQuizzes()).addToBackStack(null).commit();
+
+                }
+                if (tag.equals("tests"))
+                {
+                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerTests()).addToBackStack(null).commit();
+
+                }
+                if (tag.equals("exams"))
+                {
+                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerExams()).addToBackStack(null).commit();
+
+                }
+
 
             }
         });
@@ -196,14 +214,14 @@ public class NewQuizTestExam extends Fragment
         return myView;
     }
 
-    private void setQuizTestExam (final DatabaseReference classList,Iterator<DataSnapshot> it, final String name,Double weight)
+    private void setQuizTestExam (final DatabaseReference classList,Iterator<DataSnapshot> it, final String name,Double weight, String childName)
     {
         while (it.hasNext())
         {
             HashMap<String,Object> toUpload = new HashMap<>();
             toUpload.put("Grade",0);
             toUpload.put("weight (%)",weight);
-            classList.child(it.next().getKey()).child("quizzes").child(name).updateChildren(toUpload);
+            classList.child(it.next().getKey()).child(childName).child(name).updateChildren(toUpload);
         }
     }
 
