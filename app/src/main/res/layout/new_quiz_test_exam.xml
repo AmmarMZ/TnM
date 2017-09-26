@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:id="@+id/newAQTE"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/quizTestExamNameText"
@@ -64,10 +66,9 @@
         android:layout_alignStart="@+id/quizTestExamDateText"
         android:layout_below="@+id/quizTestExamDateText"
         android:layout_marginTop="13dp"
-        android:focusable="false"
         android:ems="10"
-        android:inputType="textPersonName"
-         />
+        android:focusable="false"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/quizTestExamButton"
@@ -82,6 +83,6 @@
         android:id="@+id/quizTestExamCalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/quizTestExamNameInput"
-        android:layout_alignStart="@+id/quizTestExamWeightInput" />
+        android:layout_alignStart="@+id/quizTestExamWeightInput"
+        android:layout_below="@+id/quizTestExamNameInput" />
 </RelativeLayout>

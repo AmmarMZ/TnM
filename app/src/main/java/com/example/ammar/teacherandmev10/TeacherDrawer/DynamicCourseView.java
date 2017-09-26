@@ -28,6 +28,7 @@ import com.example.ammar.teacherandmev10.R;
 
 
 public class DynamicCourseView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+
 {
     public static FragmentManager fm;
 
@@ -103,42 +104,42 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
 
         if (id == R.id.nav_first_layout)
         { //enroll Students
-            getSupportActionBar().setTitle(title + " - Enroll Students");
+            setActionBarTitle(title + " - Enroll Students");
             fm.beginTransaction().replace(R.id.content_frame,new DrawerEnrollStudents()).addToBackStack(null).commit();
         }
         else if (id == R.id.nav_second_layout)
         {//view students[]''''''''''''''''''
-            getSupportActionBar().setTitle(title + " - Student List");
+            setActionBarTitle(title + " - Student List");
             fm.beginTransaction().replace(R.id.content_frame, new DrawerViewStudents()).addToBackStack(null).commit();
         }
         else if (id == R.id.nav_fourth_layout)
         { //view attendance
-            getSupportActionBar().setTitle(title + " - Class Attendance");
+            setActionBarTitle(title + " - Class Attendance");
             fm.beginTransaction().replace(R.id.content_frame, new DrawerViewAttendance()).addToBackStack(null).commit();
         }
         else if (id == R.id.nav_fifth_layout)
         { //class assignments
             getSupportActionBar().setTitle(title + " - Class Assignments");
-            fm.beginTransaction().replace(R.id.content_frame, new DrawerAssignments()).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.content_frame, new DrawerAssignments()).addToBackStack("assignments").commit();
         }
         else if (id == R.id.nav_sixth_layout)
         { //class quizzes
-            getSupportActionBar().setTitle(title + " - Class Quizzes");
-            fm.beginTransaction().replace(R.id.content_frame, new DrawerQuizzes()).addToBackStack(null).commit();
+            setActionBarTitle(title + " - Class Quizzes");
+            fm.beginTransaction().replace(R.id.content_frame, new DrawerQuizzes()).addToBackStack("quizzes").commit();
         }
         else if (id == R.id.nav_seventh_layout)
         { //class tests
-            getSupportActionBar().setTitle(title + " - Class Tests");
-            fm.beginTransaction().replace(R.id.content_frame, new DrawerTests()).addToBackStack(null).commit();
+            setActionBarTitle(title + " - Class Tests");
+            fm.beginTransaction().replace(R.id.content_frame, new DrawerTests()).addToBackStack("tests").commit();
         }
         else if (id == R.id.nav_eigth_layout)
         { //class exams
-            getSupportActionBar().setTitle(title + " - Class Exams");
-            fm.beginTransaction().replace(R.id.content_frame, new DrawerExams()).addToBackStack(null).commit();
+            setActionBarTitle(title + " - Class Exams");
+            fm.beginTransaction().replace(R.id.content_frame, new DrawerExams()).addToBackStack("exams").commit();
         }
         else if (id == R.id.nav_ninth_layout)
         { //class stats
-            getSupportActionBar().setTitle(title + " - Class Statistics");
+            setActionBarTitle(title + " - Class Statistics");
             fm.beginTransaction().replace(R.id.content_frame, new DrawerStatistics()).addToBackStack(null).commit();
         }
 
@@ -147,4 +148,7 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
         return true;
     }
 
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.ammar.teacherandmev10.TeacherDrawer;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ammar.teacherandmev10.Activities.TeacherView;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.IdentifierClasses.Quizzes;
 import com.example.ammar.teacherandmev10.R;
@@ -21,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +38,10 @@ public class NewQuizTestExam extends Fragment
 {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
+        int index = DynamicCourseView.fm.getBackStackEntryCount() - 1;
+        String tag = DynamicCourseView.fm.getBackStackEntryAt(index).getName();
+
+
         final View myView = inflater.inflate(R.layout.new_quiz_test_exam,container,false);
 
         final EditText nameInput = (EditText) myView.findViewById(R.id.quizTestExamNameInput);
@@ -47,6 +55,27 @@ public class NewQuizTestExam extends Fragment
         final CalendarView quizTestExamCalendar = (CalendarView) myView.findViewById(R.id.quizTestExamCalendar);
         final Button createQuiz = (Button) myView.findViewById(R.id.quizTestExamButton);
         quizTestExamCalendar.setVisibility(View.INVISIBLE);
+
+
+        if (tag.equals("quizzes"))
+        {
+            ((DynamicCourseView) getActivity()).setActionBarTitle("New Quiz");
+                //default is quizzes
+        }
+        if (tag.equals("tests"))
+        {
+            ((DynamicCourseView) getActivity()).setActionBarTitle("New Test");
+            nameText.setText(R.string.test_name);
+            weightText.setText(R.string.test_weight);
+            dateText.setText(R.string.test_date);
+        }
+        if (tag.equals("exams"))
+        {
+            ((DynamicCourseView) getActivity()).setActionBarTitle("New Exam");
+            nameText.setText(R.string.exam_name);
+            weightText.setText(R.string.exam_weight);
+            dateText.setText(R.string.exam_date);
+        }
 
         Date today = new Date();
         final String todaysDate = new SimpleDateFormat("yyyy-MM-dd").format(today);

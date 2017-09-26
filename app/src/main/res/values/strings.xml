@@ -101,8 +101,14 @@
     <string name="remove_exam">Delete exam?</string>
     <string name="quizName">Quiz Name</string>
     <string name="quizNameExample">Chapter 2.2 Quiz</string>
-    <string name="quiz_weight">Quiz weight</string>
+    <string name="quiz_weight">Quiz Weight</string>
     <string name="dayOfQuiz">Quiz Date</string>
     <string name="createQuiz">Create Quiz</string>
     <string name="quiz_succ_add">Quiz Succesfully Added</string>
+    <string name="test_name">Test Name</string>
+    <string name="test_weight">Test Weight</string>
+    <string name="test_date">Test Date</string>
+    <string name="exam_name">Exam Name</string>
+    <string name="exam_weight">Exam Weight</string>
+    <string name="exam_date">Exam Date</string>
 </resources>

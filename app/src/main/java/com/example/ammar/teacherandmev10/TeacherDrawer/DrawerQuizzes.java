@@ -41,7 +41,7 @@ public class DrawerQuizzes extends Fragment { //firstLayout xml
             @Override
             public void onClick(View v)
             {
-                DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new NewQuizTestExam()).addToBackStack(null).commit();
+                DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new NewQuizTestExam()).addToBackStack("newQuiz").commit();
             }
         });
 
