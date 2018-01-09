@@ -18,11 +18,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 //first screen that is shown when app starts, contains login screen
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     private FirebaseAuth mAuth;
     private static String TAG = "MainActivity";
-
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override

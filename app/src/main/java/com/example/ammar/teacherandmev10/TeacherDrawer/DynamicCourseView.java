@@ -52,9 +52,6 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
         fm = fragmentManager;
         fragmentManager.beginTransaction().replace(R.id.content_frame, new DrawerViewStudents()).addToBackStack(null).commit();
         fragmentManager.executePendingTransactions();
-
-
-
     }
 
     @Override

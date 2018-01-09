@@ -1,5 +1,12 @@
 package com.example.ammar.teacherandmev10.IdentifierClasses;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+
+import com.example.ammar.teacherandmev10.R;
+import com.google.firebase.database.DatabaseReference;
+
 import junit.framework.Test;
 
 import java.util.ArrayList;
@@ -54,6 +61,26 @@ public class Course {
 
     public void setCourseAverage(double courseAverage) {
         this.courseAverage = courseAverage;
+    }
+
+    public void removeCourse(final String course, final DatabaseReference db, Context context)
+    {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.remove_course)
+                .setMessage(R.string.delete_course)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        db.child(course).removeValue();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+
+                    }
+                }).setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 
 }

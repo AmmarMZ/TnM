@@ -38,9 +38,6 @@ public class NewQuizTestExam extends Fragment
 {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
-
-
-
         final View myView = inflater.inflate(R.layout.new_quiz_test_exam,container,false);
 
         final EditText nameInput = (EditText) myView.findViewById(R.id.quizTestExamNameInput);
