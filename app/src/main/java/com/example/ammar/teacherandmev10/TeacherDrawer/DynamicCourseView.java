@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ammar.teacherandmev10.R;
 
@@ -33,7 +34,8 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
     public static FragmentManager fm;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynam_course_view);
 
@@ -57,11 +59,18 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
     @Override
     public void onBackPressed()
     {
-        if(fm.getBackStackEntryCount() > 0)
-            fm.popBackStackImmediate();
-        else
+        if(fm.getBackStackEntryCount() == 1)
+        {
             super.onBackPressed();
-
+        }
+        if (fm.getBackStackEntryCount() > 1)
+        {
+            fm.popBackStackImmediate();
+        }
+        else
+        {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -69,7 +78,7 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         String title = getIntent().getStringExtra("courseName");
-        getSupportActionBar().setTitle( title + " - Student List");
+        getSupportActionBar().setTitle(title + " - Student List");
         TextView drawerTitle = (TextView)findViewById(R.id.drawerTitle);
         drawerTitle.setText(title);
 
@@ -85,8 +94,8 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
     {
         int id = item.getItemId();
         android.app.FragmentManager fragmentManager = getFragmentManager();
-
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new CourseSettings()).commit();
         }
         return super.onOptionsItemSelected(item);

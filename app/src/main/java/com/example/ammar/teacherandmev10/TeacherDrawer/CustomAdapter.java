@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +36,9 @@ import java.util.Map;
 
 public class CustomAdapter extends BaseAdapter {
 
+    private  static DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
     private NavigationView navigationView;
+    private static String courseName;
 
     String [] result;
     //names of students
@@ -119,12 +122,9 @@ public class CustomAdapter extends BaseAdapter {
         holder.status.setText(status[position]);
 
         holder.dots =(ImageButton) rowView.findViewById(R.id.imageButton4);
+        courseName = getActivity().getIntent().getStringExtra("courseName");
 
-        final String extracted = result[position].trim(); //name of student
-
-        final Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-        final DatabaseReference db = (DatabaseReference) objReceived;
-        final DatabaseReference databaseReference = db.child(extracted).child("attendance");
+        final DatabaseReference attendanceRef = dbAccessFunctions.getClassList(courseName);
         navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
 
         holder.dots.setOnClickListener(new View.OnClickListener() { //change
@@ -185,26 +185,23 @@ public class CustomAdapter extends BaseAdapter {
 
                                         if (popupMenu.getMenu().getItem(0).equals(item)) //present
                                         {
-                                            databaseReference.child(getDate()).removeValue();
-                                            databaseReference.child(getDate()).setValue("Present");
+                                            attendanceRef.child(getDate()).removeValue();
+                                            attendanceRef.child(getDate()).setValue("Present");
                                         }
                                         if (popupMenu.getMenu().getItem(1).equals(item)) //sick
                                         {
-                                            databaseReference.child(getDate()).removeValue();
-                                            databaseReference.child(getDate()).setValue("Sick");
+                                            attendanceRef.child(getDate()).removeValue();
+                                            attendanceRef.child(getDate()).setValue("Sick");
                                         }
                                         if (popupMenu.getMenu().getItem(2).equals(item))//absent
                                         {
-                                            databaseReference.child(getDate()).setValue("Absent");
+                                            attendanceRef.child(getDate()).setValue("Absent");
 
                                         }
                                         if (popupMenu.getMenu().getItem(3).equals(item))//other
                                         {
-                                            databaseReference.child(getDate()).setValue("Other");
+                                            attendanceRef.child(getDate()).setValue("Other");
                                         }
-
-
-
                                 return true;
                             }
                         });
@@ -222,11 +219,10 @@ public class CustomAdapter extends BaseAdapter {
                 .setMessage(R.string.delete_student)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
                 {
-                    Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-                    DatabaseReference db = (DatabaseReference) objReceived;
+                    DatabaseReference classList = dbAccessFunctions.getClassList(courseName);
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        db.child(student).removeValue();
+                        classList.child(student).removeValue();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

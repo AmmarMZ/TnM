@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +30,7 @@ import java.util.Iterator;
 
 public class DrawerViewStudents extends Fragment { //firstLayout xml
 
+    private static DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
     private NavigationView navigationView;
     private ArrayList<String> studentListArray = new ArrayList<>();
     private CustomAdapter adapter;
@@ -46,25 +48,29 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
         message.setVisibility(View.GONE);
 
         //listener to update ListView if the Students ever change
-        if (studentList.getAdapter() == null) {
+        if (studentList.getAdapter() == null)
+        {
             message.setVisibility(View.VISIBLE);
         }
-        final Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-        DatabaseReference db = (DatabaseReference) objReceived;
+        final Object objReceived = getActivity().getIntent().getStringExtra("courseName");
+        String courseName = (String) objReceived;
+        DatabaseReference classList = dbAccessFunctions.getClassList(courseName);
 
         navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        db.addValueEventListener(new ValueEventListener() {
+        classList.addValueEventListener(new ValueEventListener()
+        {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                
                 Menu menu = navigationView.getMenu();
                 int val = 0;
                 MenuItem item;
 
-                for (int i = 0; i < menu.size(); i++) {
+                for (int i = 0; i < menu.size(); i++)
+                {
                     item = menu.getItem(i);
-                    if (item.isChecked()) {
+                    if (item.isChecked())
+                    {
                         val = i;
                         break;
                     }
@@ -73,8 +79,8 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
 
                 String title = item.getTitle().toString().trim();
 
-                if (title.equals("View Student List") || !item.isChecked()) {
-
+                if (title.equals("View Student List") || !item.isChecked())
+                {
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
                     studentListArray = getStudents(iterator);
                     String[] sLA = studentListArray.toArray(new String[0]);

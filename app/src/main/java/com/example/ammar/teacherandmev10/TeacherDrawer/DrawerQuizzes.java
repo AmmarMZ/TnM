@@ -10,6 +10,7 @@ import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,7 @@ public class DrawerQuizzes extends Fragment { //firstLayout xml
 
     View myView;
     private CustomAdapterAQTE quizAdapter;
+    private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
 
     @Nullable
     @Override
@@ -45,74 +47,36 @@ public class DrawerQuizzes extends Fragment { //firstLayout xml
             }
         });
 
-        final Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-        DatabaseReference db = (DatabaseReference) objReceived; //classList
-        db = db.getParent().child("quizzes");
+        String courseName = getActivity().getIntent().getStringExtra("courseName");
+        DatabaseReference quizzes = dbAccessFunctions.getQuizzes(courseName);
 
-        db.addValueEventListener(new ValueEventListener()
+        quizzes.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                DataSnapshot d1 = dataSnapshot;
-                DataSnapshot d2 = dataSnapshot;
-                DataSnapshot d3 = dataSnapshot;
+                Iterator<DataSnapshot> iterator1 = dataSnapshot.getChildren().iterator();
+                Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
+                Iterator<DataSnapshot> iterator3 = dataSnapshot.getChildren().iterator();
 
-                Iterator<DataSnapshot> iterator1 = d1.getChildren().iterator();
-                Iterator<DataSnapshot> iterator2 = d2.getChildren().iterator();
-                Iterator<DataSnapshot> iterator3 = d3.getChildren().iterator();
+                ArrayList<String> names = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator1,new ArrayList<String>());
+                ArrayList<String> assignedDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator2,new ArrayList<String>(),"assignedDate");
+                ArrayList<String> dueDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator3,new ArrayList<String>(), "dueDate");
 
-                ArrayList<String> assNames = getQuizzes(iterator1);
-                ArrayList<String> assignedDate = getAssignedDate(iterator2);
-                ArrayList<String> dueDate = getDueDate(iterator3);
-
-                String [] assignments = assNames.toArray(new String[0]);
+                String [] quizNames = names.toArray(new String[0]);
                 String [] assDate = assignedDate.toArray(new String[0]);
                 String [] dDate = dueDate.toArray(new String[0]);
 
-                quizAdapter = new CustomAdapterAQTE(getActivity(),assignments,myView.getContext(),assDate,dDate);
+                quizAdapter = new CustomAdapterAQTE(getActivity(),quizNames,myView.getContext(),assDate,dDate);
                 quizView.setAdapter(quizAdapter);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
         });
-
         return myView;
-    }
-
-    private ArrayList<String> getQuizzes(Iterator<DataSnapshot> iterator)
-    {
-        ArrayList<String> quizNames = new ArrayList<>();
-
-        while (iterator.hasNext())
-        {
-            quizNames.add(iterator.next().getKey());
-        }
-        return quizNames;
-    }
-
-    private ArrayList<String> getAssignedDate(Iterator<DataSnapshot> iterator)
-    {
-        ArrayList<String> assignedDates = new ArrayList<>();
-
-        while (iterator.hasNext())
-        {
-            assignedDates.add((String) iterator.next().child("assignedDate").getValue());
-        }
-        return assignedDates;
-    }
-
-    private ArrayList<String> getDueDate(Iterator<DataSnapshot> iterator)
-    {
-        ArrayList<String> dueDates = new ArrayList<>();
-
-        while (iterator.hasNext())
-        {
-            dueDates.add((String) iterator.next().child("dueDate").getValue());
-        }
-        return dueDates;
     }
 }

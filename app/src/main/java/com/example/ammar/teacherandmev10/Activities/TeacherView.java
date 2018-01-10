@@ -1,9 +1,7 @@
 package com.example.ammar.teacherandmev10.Activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -12,27 +10,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.example.ammar.teacherandmev10.IdentifierClasses.Course;
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
-import com.example.ammar.teacherandmev10.IdentifierClasses.User;
 import com.example.ammar.teacherandmev10.R;
 import com.example.ammar.teacherandmev10.TeacherDrawer.DynamicCourseView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+
 /*
     displays list of courses the teacher has in a non-custom listView using a non-custom adapter
     courses can be added and deleted by the teacher
@@ -56,22 +48,14 @@ public class TeacherView extends AppCompatActivity
         final ListView mListView = (ListView) findViewById(R.id.listView1);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.coursesProgressBar);
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String refEmail = currentUser.getEmail();
-        User temp = new User();
-
-        final String referenceToData = temp.setUniqueID(refEmail);
-        //used to convert email into key for respective database
-        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        courses = mDatabase.child(referenceToData).child("teacher").child("courses"); //email-teacher
-
+        courses = dbAccessFunctions.getCourses();
         courses.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
                 Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                courseList = dbAccessFunctions.getChildrenOfDatabase(iterator,courseList);
+                courseList = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator,courseList);
                 adapter = new ArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_1, courseList);
                 progressBar.setVisibility(View.GONE);
                 mListView.setAdapter(adapter);
