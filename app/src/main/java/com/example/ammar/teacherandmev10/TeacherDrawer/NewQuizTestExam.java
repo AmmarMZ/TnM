@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ammar.teacherandmev10.Activities.TeacherView;
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.IdentifierClasses.Quizzes;
 import com.example.ammar.teacherandmev10.R;
@@ -36,6 +37,13 @@ import java.util.Iterator;
 
 public class NewQuizTestExam extends Fragment
 {
+    private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
+    private String name;
+    private Double weight;
+    private Quizzes toUpload;
+    private boolean check;
+
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
         final View myView = inflater.inflate(R.layout.new_quiz_test_exam,container,false);
@@ -109,7 +117,6 @@ public class NewQuizTestExam extends Fragment
 
                         dateInput.setText(toAdd);
                         quizTestExamCalendar.setVisibility(View.INVISIBLE);
-
                         nameInput.setAlpha(1);
                         weightInput.setAlpha(1);
                         dateInput.setAlpha(1);
@@ -123,18 +130,15 @@ public class NewQuizTestExam extends Fragment
             }
         });
 
-        Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-        DatabaseReference db = (DatabaseReference) objReceived;
-        final DatabaseReference currentCourse = db.getParent(); //db is now equal to the current course, ie math etc
+        String courseName = getActivity().getIntent().getStringExtra("courseName");
+        final DatabaseReference currentCourse = dbAccessFunctions.getChildOfCourses(courseName);
 
         createQuiz.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
-                boolean check = true;
-
+                check = true;
                 if (nameInput.getText().length() == 0 || weightInput.getText().length() == 0
                         || dateInput.getText().length() == 0)
                 {
@@ -144,67 +148,57 @@ public class NewQuizTestExam extends Fragment
                 }
                 if (check)
                 {
-                    final Quizzes toUpload = new Quizzes();
-                   // toUpload.setName(nameInput.getText().toString());
+                    toUpload = new Quizzes();
+                    // toUpload.setName(nameInput.getText().toString());
                     toUpload.setWeight(Double.parseDouble(weightInput.getText().toString()));
                     toUpload.setAssignedDate(todaysDate);
                     toUpload.setDueDate(dateInput.getText().toString());
-
-                    final String name = nameInput.getText().toString();
-                    final Double weight = Double.parseDouble(weightInput.getText().toString());
-                    currentCourse.addValueEventListener(new ValueEventListener()
-                    {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot)
-                        {
-                            currentCourse.child(tag).child(name).setValue(toUpload);
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    final DatabaseReference db = currentCourse.child("classList");
-                    currentCourse.child("classList").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-
-                            setQuizTestExam(db,iterator,name,weight,tag);
-                            weightInput.setText("");
-                            dateInput.setText("");
-                            nameInput.setText("");
-
-                        }
-
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-                if (tag.equals("quizzes"))
-                {
-                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerQuizzes()).addToBackStack(null).commit();
-
-                }
-                if (tag.equals("tests"))
-                {
-                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerTests()).addToBackStack(null).commit();
-
-                }
-                if (tag.equals("exams"))
-                {
-                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerExams()).addToBackStack(null).commit();
+                    name = nameInput.getText().toString();
+                    weight = Double.parseDouble(weightInput.getText().toString());
 
                 }
 
 
+                currentCourse.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        currentCourse.child(tag).child(name).setValue(toUpload);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                final DatabaseReference classList = currentCourse.child("classList");
+                currentCourse.child("classList").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+
+                        setQuizTestExam(classList, iterator, name, weight, tag);
+                        weightInput.setText("");
+                        dateInput.setText("");
+                        nameInput.setText("");
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                if (tag.equals("quizzes")) {
+                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerQuizzes()).commit();
+                }
+                if (tag.equals("tests")) {
+                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerTests()).commit();
+                }
+                if (tag.equals("exams")) {
+                    DynamicCourseView.fm.beginTransaction().replace(R.id.content_frame, new DrawerExams()).commit();
+                }
             }
         });
 
@@ -220,6 +214,11 @@ public class NewQuizTestExam extends Fragment
             toUpload.put("weight (%)",weight);
             classList.child(it.next().getKey()).child(childName).child(name).updateChildren(toUpload);
         }
+    }
+
+    private void upload()
+    {
+
     }
 
 

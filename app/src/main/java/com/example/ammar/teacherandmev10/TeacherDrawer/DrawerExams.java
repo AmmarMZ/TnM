@@ -35,6 +35,11 @@ public class DrawerExams extends Fragment { //firstLayout xml
     {
         myView = inflater.inflate(R.layout.drawer_exams,container,false);
 
+        if (examAdapter != null)
+        {
+            examAdapter = new CustomAdapterAQTE();
+        }
+
         final ListView examView = (ListView) myView.findViewById(R.id.examsListView);
         Button newExam = (Button) myView.findViewById(R.id.button15);
 
@@ -76,7 +81,6 @@ public class DrawerExams extends Fragment { //firstLayout xml
 
             }
         });
-
         return myView;
     }
 }

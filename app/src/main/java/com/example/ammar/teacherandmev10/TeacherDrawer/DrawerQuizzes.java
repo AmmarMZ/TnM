@@ -28,7 +28,7 @@ import java.util.Iterator;
 public class DrawerQuizzes extends Fragment { //firstLayout xml
 
     View myView;
-    private CustomAdapterAQTE quizAdapter;
+    public CustomAdapterAQTE quizAdapter;
     private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
 
     @Nullable
@@ -36,6 +36,10 @@ public class DrawerQuizzes extends Fragment { //firstLayout xml
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.drawer_quizzes,container,false);
 
+        if (quizAdapter != null)
+        {
+            quizAdapter = new CustomAdapterAQTE();
+        }
         final ListView quizView = (ListView) myView.findViewById(R.id.quizzesListView);
         Button  newQuiz = (Button) myView.findViewById(R.id.button14);
 

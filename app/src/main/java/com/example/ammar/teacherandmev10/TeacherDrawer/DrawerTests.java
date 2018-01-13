@@ -36,6 +36,11 @@ public class DrawerTests extends Fragment { //firstLayout xml
     {
         myView = inflater.inflate(R.layout.drawer_tests,container,false);
 
+        if (testAdapter != null)
+        {
+            testAdapter = new CustomAdapterAQTE();
+        }
+
         final ListView testView = (ListView) myView.findViewById(R.id.testListView);
         Button newQuiz = (Button) myView.findViewById(R.id.button13);
 

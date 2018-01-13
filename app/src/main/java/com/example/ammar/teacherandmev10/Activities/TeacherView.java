@@ -54,6 +54,7 @@ public class TeacherView extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                System.out.println("LOADING COURSES");
                 Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
                 courseList = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator,courseList);
                 adapter = new ArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_1, courseList);

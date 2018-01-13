@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +54,7 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
         fm = fragmentManager;
+
         fragmentManager.beginTransaction().replace(R.id.content_frame, new DrawerViewStudents()).addToBackStack(null).commit();
         fragmentManager.executePendingTransactions();
     }
@@ -84,6 +87,17 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
 
         TextView drawerDescription = (TextView)findViewById(R.id.drawerDescription);
         drawerDescription.setText("Navigation Drawer");
+
+
+        ImageView backArrow = (ImageView) findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                finish();
+            }
+        });
+
 
         getMenuInflater().inflate(R.menu.dynam_course_view, menu);
         return true;

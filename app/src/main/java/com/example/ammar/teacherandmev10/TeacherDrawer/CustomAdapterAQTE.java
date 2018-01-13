@@ -3,21 +3,13 @@ package com.example.ammar.teacherandmev10.TeacherDrawer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Outline;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.support.constraint.solver.widgets.Rectangle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,24 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.PriorityQueue;
 
 /**
  * Created by Ammar on 2017-06-11.
@@ -60,6 +45,10 @@ public class CustomAdapterAQTE extends BaseAdapter
     private String[] assignedDate;
     private String[] dueDate;
     private Color [] colors;
+    private DatabaseAccessFunctions dbAccessfunctions = new DatabaseAccessFunctions();
+
+    public CustomAdapterAQTE()
+    {}
 
     public CustomAdapterAQTE(Activity mainActivity, String[] assignmentNames, Context con, String[] assign, String [] due)
     {
@@ -124,7 +113,7 @@ public class CustomAdapterAQTE extends BaseAdapter
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            removeAssignment(extracted);
+                            removeAQTE(extracted, "assignments");
                             return true;
                         }
                     });
@@ -139,7 +128,7 @@ public class CustomAdapterAQTE extends BaseAdapter
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            removeQuiz(extracted);
+                            removeAQTE(extracted,"quizzes");
                             return true;
                         }
                     });
@@ -154,7 +143,7 @@ public class CustomAdapterAQTE extends BaseAdapter
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            removeTest(extracted);
+                            removeAQTE(extracted,"tests");
                             return true;
                         }
                     });
@@ -169,7 +158,7 @@ public class CustomAdapterAQTE extends BaseAdapter
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            removeExam(extracted);
+                            removeAQTE(extracted,"exams");
                             return true;
                         }
                     });
@@ -237,7 +226,6 @@ public class CustomAdapterAQTE extends BaseAdapter
             e1.printStackTrace();
         }
 
-
         SpannableString changeFontSize =  new SpannableString(information);
         changeFontSize.setSpan(new RelativeSizeSpan(0.5f),assignmentNameArray[position].length(),information.length(),0);
 
@@ -268,19 +256,20 @@ public class CustomAdapterAQTE extends BaseAdapter
         this.activity = activity;
     }
 
-    public void removeAssignment(final String assignment)
+    public void removeAQTE(final String name, final String AQTE)
     {
+
+        String courseName = getActivity().getIntent().getStringExtra("courseName");
+        final DatabaseReference currentCourse = dbAccessfunctions.getChildOfCourses(courseName).child(AQTE);
+        
         new AlertDialog.Builder(context)
-                .setTitle(R.string.remove_assignment)
-                .setMessage(R.string.delete_assignment)
+                .setTitle("Remove " + AQTE +"?")
+                .setMessage("Deleting the " + AQTE + " will permanently remove it from the database, would you like to proceed?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
                 {
-                    Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-                    DatabaseReference db = (DatabaseReference) objReceived;
-
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        db.getParent().child("assignments"). child(assignment).removeValue();
+                        currentCourse.child(name).removeValue();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -293,79 +282,5 @@ public class CustomAdapterAQTE extends BaseAdapter
 
     }
 
-    public void removeQuiz(final String quiz)
-    {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.remove_quiz)
-                .setMessage(R.string.delete_quiz)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                {
-                    Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-                    DatabaseReference db = (DatabaseReference) objReceived;
-
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        db.getParent().child("quizzes"). child(quiz).removeValue();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-
-    }
-
-    public void removeTest(final String test)
-    {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.remove_test)
-                .setMessage(R.string.delete_test)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                {
-                    Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-                    DatabaseReference db = (DatabaseReference) objReceived;
-
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        db.getParent().child("tests"). child(test).removeValue();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-
-    }
-
-    public void removeExam(final String exam)
-    {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.remove_exam)
-                .setMessage(R.string.delete_exam)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                {
-                    Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-                    DatabaseReference db = (DatabaseReference) objReceived;
-
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        db.getParent().child("exams"). child(exam).removeValue();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-
-    }
 
 }

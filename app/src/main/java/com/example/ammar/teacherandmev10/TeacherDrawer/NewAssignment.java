@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.ammar.teacherandmev10.Activities.MainActivity;
 import com.example.ammar.teacherandmev10.IdentifierClasses.Assignments;
 import com.example.ammar.teacherandmev10.IdentifierClasses.Course;
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +44,7 @@ import java.util.Locale;
 //TODO when the calendar view appears and you click back it takes you to the assignment list menu instead of the new assignment page
 public class NewAssignment extends Fragment
 {
+    private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
@@ -154,11 +156,8 @@ public class NewAssignment extends Fragment
             }
         });
 
-
-        Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-        DatabaseReference db = (DatabaseReference) objReceived;
-        final DatabaseReference currentCourse = db.getParent(); //db is now equal to the current course, ie math etc
-
+        String courseName = getActivity().getIntent().getStringExtra("courseName");
+        final DatabaseReference currentCourse = dbAccessFunctions.getChildOfCourses(courseName); //db is now equal to the current course, ie math etc
         Button newAssignment = (Button) myView.findViewById(R.id.addAssignmentButton);
 
         newAssignment.setOnClickListener(new View.OnClickListener() {
