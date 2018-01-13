@@ -22,12 +22,17 @@ import android.widget.TextView;
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by Ammar on 2017-06-11.
@@ -259,17 +264,35 @@ public class CustomAdapterAQTE extends BaseAdapter
     public void removeAQTE(final String name, final String AQTE)
     {
 
-        String courseName = getActivity().getIntent().getStringExtra("courseName");
-        final DatabaseReference currentCourse = dbAccessfunctions.getChildOfCourses(courseName).child(AQTE);
-        
+        final String courseName = getActivity().getIntent().getStringExtra("courseName");
+        final DatabaseReference currentAQTE = dbAccessfunctions.getChildOfCourses(courseName).child(AQTE);
+
         new AlertDialog.Builder(context)
-                .setTitle("Remove " + AQTE +"?")
-                .setMessage("Deleting the " + AQTE + " will permanently remove it from the database, would you like to proceed?")
+                .setTitle("Remove " + removeLastChar(AQTE) +"?")
+                .setMessage("Deleting the " + removeLastChar(AQTE) + " will permanently remove it from the database, would you like to proceed?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        currentCourse.child(name).removeValue();
+                        currentAQTE.child(name).removeValue();
+                        final DatabaseReference classList = dbAccessfunctions.getClassList(courseName);
+
+
+                        classList.addValueEventListener(new ValueEventListener()
+                        {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot)
+                            {
+                                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                                removeAQTEFromStudents(iterator, AQTE,name,classList);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -282,5 +305,19 @@ public class CustomAdapterAQTE extends BaseAdapter
 
     }
 
+    public void removeAQTEFromStudents(Iterator<DataSnapshot> iterator, String AQTE, String name, DatabaseReference classList)
+    {
+        while (iterator.hasNext())
+        {
+            classList.child(iterator.next().getKey()).child(AQTE).child(name).removeValue();
+        }
+    }
 
+
+    public String removeLastChar(String str) {
+        if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == 'x') {
+            str = str.substring(0, str.length() - 1);
+        }
+        return str;
+    }
 }
