@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            >
+        <activity
+            android:name=".Activities.MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +25,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
-
         <activity
             android:name=".Activities.RoleSelection"
             android:parentActivityName=".Activities.MainActivity">
@@ -33,26 +32,27 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
-
-        <activity android:name=".Activities.Register"
-            android:windowSoftInputMode="adjustPan"
-            />
+        <activity
+            android:name=".Activities.Register"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Activities.InsertInfo" />
-
         <activity
             android:name=".Activities.TeacherView"
             android:parentActivityName=".Activities.RoleSelection">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.RoleSelection"/>
+                android:value=".Activities.RoleSelection" />
         </activity>
-
         <activity android:name=".Activities.ParentView" />
         <activity android:name=".Activities.LiveChat" />
         <activity
             android:name=".TeacherDrawer.DynamicCourseView"
             android:label="@string/title_activity_dynam_course_view"
-            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".StudentDrawer.StudentView"
+            android:label="@string/title_activity_student_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

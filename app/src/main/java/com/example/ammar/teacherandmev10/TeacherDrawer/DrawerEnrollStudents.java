@@ -1,12 +1,15 @@
 package com.example.ammar.teacherandmev10.TeacherDrawer;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -62,7 +65,7 @@ public class DrawerEnrollStudents extends Fragment //firstLayout xml
                     String tempName, fName, lName;
 
                     String courseName = getActivity().getIntent().getStringExtra("courseName");
-                    DatabaseReference classList = dbAccessFunctions.getExams(courseName);
+                    DatabaseReference classList = dbAccessFunctions.getClassList(courseName);
 
                     final Map<String, Object> studentsToAdd = new HashMap<>();
                     boolean check = true;
@@ -112,6 +115,8 @@ public class DrawerEnrollStudents extends Fragment //firstLayout xml
                             classList.updateChildren(studentsToAdd);
                             Toast.makeText(myView.getContext(), R.string.student_succ_add, Toast.LENGTH_SHORT).show();
                             input.setText("");
+                            final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                         }
                     }
                 }

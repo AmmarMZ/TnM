@@ -3,6 +3,7 @@ package com.example.ammar.teacherandmev10.TeacherDrawer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
+import com.example.ammar.teacherandmev10.StudentDrawer.StudentView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -129,6 +131,12 @@ public class CustomAdapter extends BaseAdapter {
         final DatabaseReference attendanceRef = dbAccessFunctions.getClassList(courseName);
         navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
 
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), StudentView.class));
+            }
+        });
         holder.dots.setOnClickListener(new View.OnClickListener() { //change
             @Override
             public void onClick(View v)

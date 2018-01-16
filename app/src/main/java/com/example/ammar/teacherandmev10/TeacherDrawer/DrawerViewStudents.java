@@ -105,8 +105,7 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
             @Override
             public void onClick(View v)
             {
-                navigationView.getMenu().performIdentifierAction(R.id.nav_first_layout, 0);
-
+                getFragmentManager().beginTransaction().replace(R.id.content_frame,new DrawerEnrollStudents()).addToBackStack(null).commit();
             }
         });
 

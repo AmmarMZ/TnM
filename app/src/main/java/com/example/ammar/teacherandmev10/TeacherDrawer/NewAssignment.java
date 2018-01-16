@@ -5,6 +5,7 @@ import android.app.Fragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -44,23 +46,34 @@ import java.util.Locale;
 public class NewAssignment extends Fragment
 {
     private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
+    private EditText assignmentNameInput;
+    private EditText assignmentWeightInput;
+    private EditText assignedDateInput;
+    private EditText dueDateInput;
+    private CalendarView calendar;
+    private TextView assignmentNameTitle;
+    private TextView assignmentWeightTitle;
+    private TextView assignmentAssignedDateTitle;
+    private TextView assignmentDueDateTitle;
+    private Button newAssignment;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
         final View myView = inflater.inflate(R.layout.new_assignment,container,false);
 
-        final EditText assignmentNameInput = (EditText) myView.findViewById(R.id.assignmentNameInput);
-        final EditText assignmentWeightInput = (EditText) myView.findViewById(R.id.assignmentPercentageInput);
-        final EditText assignedDateInput = (EditText) myView.findViewById(R.id.assignedDateInput);
-        final EditText dueDateInput = (EditText) myView.findViewById(R.id.dueDateInput);
-        final CalendarView calendar = (CalendarView) myView.findViewById(R.id.calendarViewAssignment);
+        assignmentNameInput = (EditText) myView.findViewById(R.id.assignmentNameInput);
+        assignmentWeightInput = (EditText) myView.findViewById(R.id.assignmentPercentageInput);
+        assignedDateInput = (EditText) myView.findViewById(R.id.assignedDateInput);
+        dueDateInput = (EditText) myView.findViewById(R.id.dueDateInput);
+        calendar = (CalendarView) myView.findViewById(R.id.calendarViewAssignment);
 
-        final TextView assignmentNameTitle = (TextView) myView.findViewById(R.id.assignmentNameText);
-        final TextView assignmentWeightTitle = (TextView) myView.findViewById(R.id.assignmentPercentage);
-        final TextView assignmentAssignedDateTitle = (TextView) myView.findViewById(R.id.assignedDate);
-        final TextView assignmentDueDateTitle = (TextView) myView.findViewById(R.id.dueDate);
-        final Button newAssignment = (Button) myView.findViewById(R.id.addAssignmentButton);
+        assignmentNameTitle = (TextView) myView.findViewById(R.id.assignmentNameText);
+        assignmentWeightTitle = (TextView) myView.findViewById(R.id.assignmentPercentage);
+        assignmentAssignedDateTitle = (TextView) myView.findViewById(R.id.assignedDate);
+        assignmentDueDateTitle = (TextView) myView.findViewById(R.id.dueDate);
+        newAssignment = (Button) myView.findViewById(R.id.addAssignmentButton);
 
 
         calendar.setVisibility(View.INVISIBLE);
@@ -76,16 +89,8 @@ public class NewAssignment extends Fragment
            {
 
                calendar.setVisibility(View.VISIBLE);
-
-               assignmentNameInput.setAlpha(0);
-               assignmentWeightInput.setAlpha(0);
-               dueDateInput.setAlpha(0);
-               assignedDateInput.setAlpha(0);
-               assignmentNameTitle.setAlpha(0);
-               assignmentWeightTitle.setAlpha(0);
-               assignmentAssignedDateTitle.setAlpha(0);
-               assignmentDueDateTitle.setAlpha(0);
-               newAssignment.setAlpha(0);
+               closeMenu();
+                hideFields();
 
                calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                    @Override
@@ -93,22 +98,11 @@ public class NewAssignment extends Fragment
                    {
                        String toAdd;
                        if(month < 9)
-                       toAdd = String.valueOf(year)+"-0" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
+                            toAdd = String.valueOf(year)+"-0" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
                        else
                            toAdd = String.valueOf(year)+"-" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
 
-                       assignedDateInput.setText(toAdd);
-                       calendar.setVisibility(View.INVISIBLE);
-                       assignmentNameInput.setAlpha(1);
-                       assignmentWeightInput.setAlpha(1);
-                       assignedDateInput.setAlpha(1);
-                       dueDateInput.setAlpha(1);
-                       assignmentNameTitle.setAlpha(1);
-                       assignmentWeightTitle.setAlpha(1);
-                       assignmentAssignedDateTitle.setAlpha(1);
-                       assignmentDueDateTitle.setAlpha(1);
-                       newAssignment.setAlpha(1);
-
+                       showFields(toAdd,"assigned");
 
                    }
                });
@@ -121,16 +115,8 @@ public class NewAssignment extends Fragment
             public void onClick(View v)
             {
                 calendar.setVisibility(View.VISIBLE);
-
-                assignmentNameInput.setAlpha(0);
-                assignmentWeightInput.setAlpha(0);
-                assignedDateInput.setAlpha(0);
-                dueDateInput.setAlpha(0);
-                assignmentNameTitle.setAlpha(0);
-                assignmentWeightTitle.setAlpha(0);
-                assignmentAssignedDateTitle.setAlpha(0);
-                assignmentDueDateTitle.setAlpha(0);
-                newAssignment.setAlpha(0);
+                closeMenu();
+                hideFields();
 
                 calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
@@ -143,23 +129,12 @@ public class NewAssignment extends Fragment
                         else
                             toAdd = String.valueOf(year)+"-" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
 
-                        dueDateInput.setText(toAdd);
-                        calendar.setVisibility(View.INVISIBLE);
-                        assignmentNameInput.setAlpha(1);
-                        assignmentWeightInput.setAlpha(1);
-                        assignedDateInput.setAlpha(1);
-                        dueDateInput.setAlpha(1);
-                        assignmentNameTitle.setAlpha(1);
-                        assignmentWeightTitle.setAlpha(1);
-                        assignmentAssignedDateTitle.setAlpha(1);
-                        assignmentDueDateTitle.setAlpha(1);
-                        newAssignment.setAlpha(1);
-
-
+                        showFields(toAdd,"due");
                     }
                 });
             }
         });
+
 
         String courseName = getActivity().getIntent().getStringExtra("courseName");
         final DatabaseReference currentCourse = dbAccessFunctions.getChildOfCourses(courseName); //db is now equal to the current course, ie math etc
@@ -233,5 +208,49 @@ public class NewAssignment extends Fragment
             classList.child(it.next().getKey()).child("assignments").child(name).updateChildren(toUpload);
         }
     }
+
+    private void closeMenu()
+    {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    private void hideFields()
+    {
+        assignmentNameInput.setAlpha(0);
+        assignmentWeightInput.setAlpha(0);
+        dueDateInput.setAlpha(0);
+        assignedDateInput.setAlpha(0);
+        assignmentNameTitle.setAlpha(0);
+        assignmentWeightTitle.setAlpha(0);
+        assignmentAssignedDateTitle.setAlpha(0);
+        assignmentDueDateTitle.setAlpha(0);
+        newAssignment.setAlpha(0);
+    }
+
+    private void showFields(String input, String due)
+    {
+        if(due.equals("due"))
+        {
+            dueDateInput.setText(input);
+        }
+        else
+        {
+            assignedDateInput.setText(input);
+
+        }
+        calendar.setVisibility(View.INVISIBLE);
+        assignmentNameInput.setAlpha(1);
+        assignmentWeightInput.setAlpha(1);
+        assignedDateInput.setAlpha(1);
+        dueDateInput.setAlpha(1);
+        assignmentNameTitle.setAlpha(1);
+        assignmentWeightTitle.setAlpha(1);
+        assignmentAssignedDateTitle.setAlpha(1);
+        assignmentDueDateTitle.setAlpha(1);
+        newAssignment.setAlpha(1);
+    }
+
+
 //TODO consider the situation when a student is added but there are already existing assignments
 }

@@ -42,22 +42,30 @@ public class NewQuizTestExam extends Fragment
     private Double weight;
     private Quizzes toUpload;
     private boolean check;
+    private EditText nameInput;
+    private EditText weightInput;
+    private EditText dateInput;
+    private TextView nameText;
+    private TextView weightText;
+    private TextView dateText;
+    private CalendarView quizTestExamCalendar;
+    private Button createQuiz;
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
         final View myView = inflater.inflate(R.layout.new_quiz_test_exam,container,false);
 
-        final EditText nameInput = (EditText) myView.findViewById(R.id.quizTestExamNameInput);
-        final EditText weightInput = (EditText) myView.findViewById(R.id.quizTestExamWeightInput);
-        final EditText dateInput = (EditText) myView.findViewById(R.id.quizTestExamDateInput);
+        nameInput = (EditText) myView.findViewById(R.id.quizTestExamNameInput);
+        weightInput = (EditText) myView.findViewById(R.id.quizTestExamWeightInput);
+        dateInput = (EditText) myView.findViewById(R.id.quizTestExamDateInput);
 
-        final TextView nameText = (TextView) myView.findViewById(R.id.quizTestExamNameText);
-        final TextView weightText = (TextView) myView.findViewById(R.id.quizTestExamWeightText);
-        final TextView dateText = (TextView) myView.findViewById(R.id.quizTestExamDateText);
+        nameText = (TextView) myView.findViewById(R.id.quizTestExamNameText);
+        weightText = (TextView) myView.findViewById(R.id.quizTestExamWeightText);
+        dateText = (TextView) myView.findViewById(R.id.quizTestExamDateText);
 
-        final CalendarView quizTestExamCalendar = (CalendarView) myView.findViewById(R.id.quizTestExamCalendar);
-        final Button createQuiz = (Button) myView.findViewById(R.id.quizTestExamButton);
+        quizTestExamCalendar = (CalendarView) myView.findViewById(R.id.quizTestExamCalendar);
+        createQuiz = (Button) myView.findViewById(R.id.quizTestExamButton);
         quizTestExamCalendar.setVisibility(View.INVISIBLE);
 
         int index = DynamicCourseView.fm.getBackStackEntryCount() - 1;
@@ -96,16 +104,7 @@ public class NewQuizTestExam extends Fragment
             public void onClick(View v)
             {
 
-                quizTestExamCalendar.setVisibility(View.VISIBLE);
-
-                createQuiz.setAlpha(0);
-                nameInput.setAlpha(0);
-                weightInput.setAlpha(0);
-                dateInput.setAlpha(0);
-                nameText.setAlpha(0);
-                weightText.setAlpha(0);
-                dateText.setAlpha(0);
-
+                hideFields();
                 quizTestExamCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener()
                 {
                     @Override
@@ -117,16 +116,7 @@ public class NewQuizTestExam extends Fragment
                         else
                             toAdd = String.valueOf(year)+"-" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
 
-                        dateInput.setText(toAdd);
-                        quizTestExamCalendar.setVisibility(View.INVISIBLE);
-                        nameInput.setAlpha(1);
-                        weightInput.setAlpha(1);
-                        dateInput.setAlpha(1);
-                        nameText.setAlpha(1);
-                        weightText.setAlpha(1);
-                        dateText.setAlpha(1);
-                        createQuiz.setAlpha(1);
-
+                        showFields(toAdd);
                     }
                 });
             }
@@ -215,5 +205,30 @@ public class NewQuizTestExam extends Fragment
             toUpload.put("weight (%)",weight);
             classList.child(it.next().getKey()).child(childName).child(name).updateChildren(toUpload);
         }
+    }
+
+    private void hideFields()
+    {
+        quizTestExamCalendar.setVisibility(View.VISIBLE);
+        createQuiz.setAlpha(0);
+        nameInput.setAlpha(0);
+        weightInput.setAlpha(0);
+        dateInput.setAlpha(0);
+        nameText.setAlpha(0);
+        weightText.setAlpha(0);
+        dateText.setAlpha(0);
+    }
+
+    private void showFields(String date)
+    {
+        dateInput.setText(date);
+        quizTestExamCalendar.setVisibility(View.INVISIBLE);
+        nameInput.setAlpha(1);
+        weightInput.setAlpha(1);
+        dateInput.setAlpha(1);
+        nameText.setAlpha(1);
+        weightText.setAlpha(1);
+        dateText.setAlpha(1);
+        createQuiz.setAlpha(1);
     }
 }
