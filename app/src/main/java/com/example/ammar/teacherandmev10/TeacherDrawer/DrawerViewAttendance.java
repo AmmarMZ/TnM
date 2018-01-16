@@ -38,7 +38,7 @@ public class DrawerViewAttendance extends Fragment { //firstLayout xml
                 date.putInt("day",dayOfMonth);
                 next.setArguments(date);
 
-                fragmentManager.beginTransaction().replace(R.id.content_frame,next).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,next).addToBackStack(null).commit();
 
             }
         });

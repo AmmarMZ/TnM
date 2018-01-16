@@ -84,7 +84,7 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
                     studentListArray = getStudents(iterator);
                     String[] sLA = studentListArray.toArray(new String[0]);
-                    adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length],myView.getContext());
+                    adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length],myView.getContext(),null);
                     adapter.setActivity(getActivity());
                     studentList.setAdapter(adapter);
                 }

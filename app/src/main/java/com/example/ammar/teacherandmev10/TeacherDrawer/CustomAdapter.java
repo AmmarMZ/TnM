@@ -39,6 +39,7 @@ public class CustomAdapter extends BaseAdapter {
     private  static DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
     private NavigationView navigationView;
     private static String courseName;
+    private static String studentName;
 
     String [] result;
     //names of students
@@ -73,13 +74,14 @@ public class CustomAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater;
 
-    public CustomAdapter(Activity mainActivity, String[] prgmNameList, int[] prgmImages,String [] stats,Context con)
+    public CustomAdapter(Activity mainActivity, String[] prgmNameList, int[] prgmImages,String [] stats,Context con, String todaysDate)
     {
         result = prgmNameList;
         status = stats;
         context = mainActivity;
         imageId = prgmImages;
         context = con;
+        date = todaysDate;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -145,10 +147,10 @@ public class CustomAdapter extends BaseAdapter {
                 }
                 item = menu.getItem(val);
                 String title = item.getTitle().toString().trim();
+                studentName = result[position];
 
-                    if (title.equals("View Student List") || !item.isChecked())
+                if (title.equals("View Student List") || !item.isChecked())
                     {
-                        final String extracted = result[position];
                         PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
                         popupMenu.getMenu().add(R.string.remove_student_pop);
                         popupMenu.show();
@@ -158,7 +160,7 @@ public class CustomAdapter extends BaseAdapter {
                             @Override
                             public boolean onMenuItemClick(MenuItem item)
                             {
-                                removeStudent(extracted);
+                                removeStudent(studentName);
                                 return true;
                             }
                         });
@@ -173,9 +175,6 @@ public class CustomAdapter extends BaseAdapter {
                         popupMenu.getMenu().add(R.string.other);
                         popupMenu.show();
 
-//                        final Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-//                        final DatabaseReference db = (DatabaseReference) objReceived;
-//                        final DatabaseReference databaseReference = db.child(extracted).child("attendance");
 
                         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                         {
@@ -185,22 +184,19 @@ public class CustomAdapter extends BaseAdapter {
 
                                         if (popupMenu.getMenu().getItem(0).equals(item)) //present
                                         {
-                                            attendanceRef.child(getDate()).removeValue();
-                                            attendanceRef.child(getDate()).setValue("Present");
+                                            updateAttendance(attendanceRef,"Present");
                                         }
                                         if (popupMenu.getMenu().getItem(1).equals(item)) //sick
                                         {
-                                            attendanceRef.child(getDate()).removeValue();
-                                            attendanceRef.child(getDate()).setValue("Sick");
+                                            updateAttendance(attendanceRef,"Sick");
                                         }
                                         if (popupMenu.getMenu().getItem(2).equals(item))//absent
                                         {
-                                            attendanceRef.child(getDate()).setValue("Absent");
-
+                                            updateAttendance(attendanceRef,"Absent");
                                         }
                                         if (popupMenu.getMenu().getItem(3).equals(item))//other
                                         {
-                                            attendanceRef.child(getDate()).setValue("Other");
+                                            updateAttendance(attendanceRef,"Other");
                                         }
                                 return true;
                             }
@@ -212,6 +208,10 @@ public class CustomAdapter extends BaseAdapter {
         return rowView;
     }
 
+    public void updateAttendance(DatabaseReference db, String type)
+    {
+        db.child(studentName).child("attendance").child(getDate()).setValue(type);
+    }
     public void removeStudent(final String student)
     {
         new AlertDialog.Builder(context)

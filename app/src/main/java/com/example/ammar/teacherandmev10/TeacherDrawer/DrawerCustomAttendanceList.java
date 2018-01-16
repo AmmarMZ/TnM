@@ -1,6 +1,7 @@
 package com.example.ammar.teacherandmev10.TeacherDrawer;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.Student;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
@@ -23,7 +25,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -39,91 +43,65 @@ public class DrawerCustomAttendanceList extends Fragment
     private String realDate;    //date in yyyy-mm-dd
     private NavigationView navigationView; //the drawer menu
     private TextView titleDate;
+    private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
+    private DatabaseReference classList;
+    private String [] namesInput;
+    private String [] statusInput;
+    private int [] colours;
+    private Context context;
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState)
     {
         myView = inflater.inflate(R.layout.custom_list_view,container,false);
-        final Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-        final DatabaseReference db = (DatabaseReference) objReceived; //classList
+        context = getActivity().getApplicationContext();
+
+        String courseName = getActivity().getIntent().getStringExtra("courseName");
+        classList = dbAccessFunctions.getClassList(courseName);
+
         final ListView attendanceList = (ListView) myView.findViewById(R.id.listViewAttendance);
         navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        titleDate = (TextView) myView.findViewById(R.id.textView1);
+
+        Bundle date = getArguments();
+        int year = date.getInt("year");
+        int month = date.getInt("month");
+        int day = date.getInt("day");
+
+        if (month < 10 && day < 10)
+            realDate = Integer.toString(year) + "-0" + Integer.toString(month) + "-0" + Integer.toString(day);
+        if(month < 10 && day > 10)
+            realDate = Integer.toString(year) + "-0" + Integer.toString(month) + "-" + Integer.toString(day);
+        if(month > 10 && day < 10)
+            realDate = Integer.toString(year) + "-" + Integer.toString(month) + "-0" + Integer.toString(day);
+        if(month > 10 && day > 10)
+            realDate = Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day);
+
+        realDate = realDate.trim();
+
+        titleDate.setText("Attendance for:        " + realDate);
 
 
-        db.addValueEventListener(new ValueEventListener()
+        classList.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                if (navigationView == null)
-                navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
-
-                Menu menu = navigationView.getMenu();
-                int val = 0;
-                MenuItem item;
-
-                for (int i = 0; i < menu.size(); i++)
-                {
-                    item = menu.getItem(i);
-                    if (item.isChecked())
-                    {
-                        val = i;
-                        break;
-                    }
-                }
-                item = menu.getItem(val);
-                String title = item.getTitle().toString().trim();
-                if (title.equals("Attendance"))
-                {
-                    Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                    Bundle date = getArguments();
-                    int year = date.getInt("year");
-                    int month = date.getInt("month");
-                    int day = date.getInt("day");
-
-                    if (month < 10 && day < 10)
-                        realDate = Integer.toString(year) + "-0" + Integer.toString(month) + "-0" + Integer.toString(day);
-                    if(month < 10 && day > 10)
-                        realDate = Integer.toString(year) + "-0" + Integer.toString(month) + "-" + Integer.toString(day);
-                    if(month > 10 && day < 10)
-                        realDate = Integer.toString(year) + "-" + Integer.toString(month) + "-0" + Integer.toString(day);
-                    if(month > 10 && day > 10)
-                        realDate = Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day);
-
-                    realDate = realDate.trim();
-
-                    if (titleDate == null)
-                    titleDate = (TextView) getActivity().findViewById(R.id.textView1);
-
-                    ArrayList<ArrayList> threeInputs = getStudents(iterator, realDate);
-                    ArrayList<String> names = threeInputs.get(0);
-                    ArrayList<Integer> colours = threeInputs.get(1);    //green,red,yellow,or blue
-                    ArrayList<String> statuses = threeInputs.get(2);    //present,absent,sick, or other
-
-                    titleDate.setText(realDate + "           " + names.size() + " Students");
-
-                    String[] namesInput = names.toArray(new String[0]);
-                    String[] statusesInput = statuses.toArray(new String[0]);
-                    int[] coloursInput = new int[colours.size()];
-                    for (int i = 0; i < colours.size(); i++)
-                    {
-                        coloursInput[i] = colours.get(i);
-                    }
-
-                    adapter = new CustomAdapter(getActivity(), namesInput, coloursInput, statusesInput,myView.getContext());
-                    adapter.setActivity(getActivity());
-                    adapter.setDate(realDate);
-                    attendanceList.setAdapter(adapter);
-                    //get iterator for all students and then collect all their names in #getStudents
-                }
+                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
+                namesInput = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
+                statusInput = getAttendance(iterator2);
+                colours = setColours(statusInput);
+                adapter = new CustomAdapter(getActivity(),namesInput,colours,statusInput,context,realDate);
+                attendanceList.setAdapter(adapter);
             }
             @Override
             public void onCancelled(DatabaseError databaseError)
             {
                 System.out.println("Failed to read: " + databaseError.getCode());
             }
-        }); //end of database listener
+        });
 
         Button takeAttendanceButton = (Button) myView.findViewById(R.id.button11); //take attendance button
 
@@ -137,20 +115,19 @@ public class DrawerCustomAttendanceList extends Fragment
                         .setMessage(R.string.over_write_attendance_message)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
                         {
-                            Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-                            DatabaseReference databaseClassList = (DatabaseReference) objReceived;
+
 
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                databaseClassList.addValueEventListener(new ValueEventListener()
+                                classList.addValueEventListener(new ValueEventListener()
                                 {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot)
                                     {
                                         Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                                        setAttendance(iterator, databaseClassList);
+                                        setAttendance(iterator, classList);
+                                        adapter.notifyDataSetChanged();
                                     }
-
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {}
                                 });
@@ -163,61 +140,56 @@ public class DrawerCustomAttendanceList extends Fragment
                         .show();
             }
         });
-
         return myView;
     }
-    private ArrayList<ArrayList> getStudents(Iterator<DataSnapshot> iterator, String date)
+
+
+    public int[] setColours(String [] statusInput)
     {
-        ArrayList<String> studentListArray = new ArrayList<>();
-        ArrayList<Integer> studentColourArray = new ArrayList<>();
-        ArrayList<String> studentStatusArray = new ArrayList<>();
-
-        while (iterator.hasNext())
+        int [] colours = new int [statusInput.length];
+        for (int i = 0; i < statusInput.length; i++)
         {
-            Student student = iterator.next().getValue(Student.class);
-            studentListArray.add("  " + student.getFirstName() + " " + student.getLastName());
+            if (statusInput[i] == null || statusInput[i].equals("Other"))
+            {
+                colours[i] = R.color.colorPrimary;
+                statusInput[i] = "Not Specified";
+            }
+            else if (statusInput[i].equals("Present"))
+            {
+                colours[i] = R.color.PresentGreen;
+                statusInput[i] = "         Present";
+            }
+            else if (statusInput[i].equals("Sick"))
+            {
+                colours[i] = R.color.SickYellow;
+                statusInput[i] = "         Sick";
 
-            HashMap<String,String> attendanceHash = student.getAttendance();
-
-            if (attendanceHash.get(date) == null || attendanceHash.get(date).equals("Other"))
-            {
-                studentColourArray.add(R.color.colorPrimary);
-                studentStatusArray.add("    Other");
             }
-            else if (attendanceHash.get(date).equals("Present"))
+            else if (statusInput[i].equals("Absent"))
             {
-                studentColourArray.add(R.color.PresentGreen);
-                studentStatusArray.add("    Present");
-            }
-            else if (attendanceHash.get(date).equals("Sick"))
-            {
-                studentColourArray.add(R.color.SickYellow);
-                studentStatusArray.add("    Sick");
-            }
-            else if (attendanceHash.get(date).equals("Absent"))
-            {
-                studentColourArray.add(R.color.AbsentRed);
-                studentStatusArray.add("    Absent");
+                colours[i] = R.color.AbsentRed;
+                statusInput[i] = "         Absent";
             }
         }
-
-        ArrayList<ArrayList> rVal = new ArrayList<>();
-        rVal.add(studentListArray);
-        rVal.add(studentColourArray);
-        rVal.add(studentStatusArray);
-
-        return rVal;
+        return colours;
     }
 
     public void setAttendance(Iterator<DataSnapshot> iterator, DatabaseReference db)
     {
         while (iterator.hasNext())
         {
-//            Map<String,Object> attendanceToday = new HashMap<>();
-//            attendanceToday.put(realDate,"Present");
             db.child(iterator.next().getKey()).child("attendance").child(realDate).setValue("Present");// updateChildren(attendanceToday);
-
         }
     }
 
+    public String [] getAttendance(Iterator<DataSnapshot> iterator)
+    {
+        ArrayList<String> temp = new ArrayList<>();
+        while (iterator.hasNext())
+        {
+            temp.add((String) iterator.next().child("attendance").child(realDate).getValue());
+        }
+
+        return temp.toArray(new String[0]);
+    }
 }

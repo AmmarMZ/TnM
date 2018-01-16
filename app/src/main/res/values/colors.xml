@@ -5,6 +5,6 @@
     <color name="colorAccent">#e50c0c</color>
     <color name="PresentGreen">#008000</color>
     <color name="SickYellow">#ffff00</color>
-    <color name="AbsentRed">#bfbbbb</color>
+    <color name="AbsentRed">#e50c0c</color>
     <color name="Undeterminedwhite">#ffffff</color>
 </resources>

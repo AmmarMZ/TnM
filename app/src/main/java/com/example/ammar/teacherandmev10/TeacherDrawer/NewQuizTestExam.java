@@ -160,7 +160,6 @@ public class NewQuizTestExam extends Fragment
 
                 }
 
-
                 currentCourse.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

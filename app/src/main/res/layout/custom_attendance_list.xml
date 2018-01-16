@@ -21,7 +21,8 @@
         android:layout_gravity="center"
         android:fontFamily="sans-serif-condensed"
         android:text="  Student Name"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
         android:id="@+id/pres_abs_sick"
@@ -30,7 +31,8 @@
         android:layout_gravity="center"
         android:text="  Present/absent/sick          "
         android:textSize="14dp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:layout_marginLeft="130dp" />
 
     <ImageButton
         android:id="@+id/imageButton4"
@@ -42,7 +44,10 @@
         android:foregroundGravity="right|clip_horizontal"
         android:scaleType="fitEnd"
         android:src="@drawable/ic_more_vert_black_24dp"
-        android:tint="@android:color/darker_gray" />
+        android:tint="@android:color/darker_gray"
+         />
+
+
 
 
 </LinearLayout>

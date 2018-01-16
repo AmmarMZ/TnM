@@ -60,6 +60,7 @@ public class TeacherView extends AppCompatActivity
             {
                 Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
                 String [] temp = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
+                courseList.clear();
                 Collections.addAll(courseList,temp);
                 adapter = new ArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_1, courseList);
                 progressBar.setVisibility(View.GONE);
