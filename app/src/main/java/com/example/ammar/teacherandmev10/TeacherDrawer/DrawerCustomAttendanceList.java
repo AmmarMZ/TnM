@@ -35,7 +35,6 @@ import java.util.Map;
 /**
  * Created by Ammar on 2017-05-21.
  */
-//TODO - Figure out why attendance statuses can't be changed after using the "take attendance button"
 public class DrawerCustomAttendanceList extends Fragment
 {
     private static View myView;
@@ -119,7 +118,7 @@ public class DrawerCustomAttendanceList extends Fragment
 
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                classList.addValueEventListener(new ValueEventListener()
+                                classList.addListenerForSingleValueEvent(new ValueEventListener()
                                 {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot)

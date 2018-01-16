@@ -202,7 +202,6 @@ public class CustomAdapter extends BaseAdapter {
                             }
                         });
                     }
-
             }
         });
         return rowView;
@@ -211,6 +210,7 @@ public class CustomAdapter extends BaseAdapter {
     public void updateAttendance(DatabaseReference db, String type)
     {
         db.child(studentName).child("attendance").child(getDate()).setValue(type);
+        this.notifyDataSetChanged();
     }
     public void removeStudent(final String student)
     {

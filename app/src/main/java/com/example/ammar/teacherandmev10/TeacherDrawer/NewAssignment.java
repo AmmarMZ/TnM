@@ -41,7 +41,6 @@ import java.util.Locale;
  * Created by Ammar on 2017-07-05.
  */
 
-//TODO when the calendar view appears and you click back it takes you to the assignment list menu instead of the new assignment page
 public class NewAssignment extends Fragment
 {
     private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
@@ -234,5 +233,5 @@ public class NewAssignment extends Fragment
             classList.child(it.next().getKey()).child("assignments").child(name).updateChildren(toUpload);
         }
     }
-//TODO - NOT Really a todo but consider the situation when a student is added but there are already existing assignments
+//TODO consider the situation when a student is added but there are already existing assignments
 }

@@ -38,7 +38,6 @@ import java.util.Iterator;
  * Created by Ammar on 2017-06-11.
  */
 
-//TODO when deleting AQTE the resepctive AQTE must also be removed from all students in the class
 
 public class CustomAdapterAQTE extends BaseAdapter
 {

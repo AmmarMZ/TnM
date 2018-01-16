@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.Student;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
 public class DrawerEnrollStudents extends Fragment //firstLayout xml
 {
     private View myView;
+    private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
 
     @Nullable
     @Override
@@ -59,8 +61,8 @@ public class DrawerEnrollStudents extends Fragment //firstLayout xml
                     String[] lines = input.getText().toString().split(System.getProperty("line.separator"));
                     String tempName, fName, lName;
 
-                    Object objReceived = ((ObjectWrapperForBinder)getActivity().getIntent().getExtras().getBinder("classList")).getData();
-                    DatabaseReference db = (DatabaseReference) objReceived;
+                    String courseName = getActivity().getIntent().getStringExtra("courseName");
+                    DatabaseReference classList = dbAccessFunctions.getExams(courseName);
 
                     final Map<String, Object> studentsToAdd = new HashMap<>();
                     boolean check = true;
@@ -89,6 +91,7 @@ public class DrawerEnrollStudents extends Fragment //firstLayout xml
                                 tempAttendance.put(dateFormat.format(today),Student.attendanceStatus.Present.toString());
                                 newStud.setAttendance(tempAttendance);
 
+                                //TODO implement behaviour map functionality
                                 HashMap<String,Student.Behaviour> behaviourMap = new HashMap<>();
                                 behaviourMap.put(dateFormat.format(today), Student.Behaviour.Green);
                                 newStud.setBehaviourMap(behaviourMap);
@@ -106,7 +109,7 @@ public class DrawerEnrollStudents extends Fragment //firstLayout xml
                         }
                         if (check)
                         {
-                            db.updateChildren(studentsToAdd);
+                            classList.updateChildren(studentsToAdd);
                             Toast.makeText(myView.getContext(), R.string.student_succ_add, Toast.LENGTH_SHORT).show();
                             input.setText("");
                         }
