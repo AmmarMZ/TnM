@@ -61,6 +61,8 @@ public class NewAssignment extends Fragment
         final TextView assignmentWeightTitle = (TextView) myView.findViewById(R.id.assignmentPercentage);
         final TextView assignmentAssignedDateTitle = (TextView) myView.findViewById(R.id.assignedDate);
         final TextView assignmentDueDateTitle = (TextView) myView.findViewById(R.id.dueDate);
+        final Button newAssignment = (Button) myView.findViewById(R.id.addAssignmentButton);
+
 
         calendar.setVisibility(View.INVISIBLE);
 
@@ -84,6 +86,7 @@ public class NewAssignment extends Fragment
                assignmentWeightTitle.setAlpha(0);
                assignmentAssignedDateTitle.setAlpha(0);
                assignmentDueDateTitle.setAlpha(0);
+               newAssignment.setAlpha(0);
 
                calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                    @Override
@@ -105,6 +108,7 @@ public class NewAssignment extends Fragment
                        assignmentWeightTitle.setAlpha(1);
                        assignmentAssignedDateTitle.setAlpha(1);
                        assignmentDueDateTitle.setAlpha(1);
+                       newAssignment.setAlpha(1);
 
 
                    }
@@ -127,6 +131,7 @@ public class NewAssignment extends Fragment
                 assignmentWeightTitle.setAlpha(0);
                 assignmentAssignedDateTitle.setAlpha(0);
                 assignmentDueDateTitle.setAlpha(0);
+                newAssignment.setAlpha(0);
 
                 calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
@@ -149,6 +154,7 @@ public class NewAssignment extends Fragment
                         assignmentWeightTitle.setAlpha(1);
                         assignmentAssignedDateTitle.setAlpha(1);
                         assignmentDueDateTitle.setAlpha(1);
+                        newAssignment.setAlpha(1);
 
 
                     }
@@ -158,7 +164,6 @@ public class NewAssignment extends Fragment
 
         String courseName = getActivity().getIntent().getStringExtra("courseName");
         final DatabaseReference currentCourse = dbAccessFunctions.getChildOfCourses(courseName); //db is now equal to the current course, ie math etc
-        Button newAssignment = (Button) myView.findViewById(R.id.addAssignmentButton);
 
         newAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +187,7 @@ public class NewAssignment extends Fragment
                     toUpload.setDueDate(dueDateInput.getText().toString());
 
 
-                currentCourse.addValueEventListener(new ValueEventListener() {
+                currentCourse.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
                     {
@@ -195,7 +200,7 @@ public class NewAssignment extends Fragment
                     }
                 });
 
-                currentCourse.child("classList").addValueEventListener(new ValueEventListener()
+                currentCourse.child("classList").addListenerForSingleValueEvent(new ValueEventListener()
                 {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)

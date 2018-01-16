@@ -2,6 +2,7 @@ package com.example.ammar.teacherandmev10.TeacherDrawer;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.icu.text.IDNA;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ammar.teacherandmev10.Activities.TeacherView;
 import com.example.ammar.teacherandmev10.R;
 
 /*
@@ -62,9 +64,10 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
     @Override
     public void onBackPressed()
     {
+        Intent intent = new Intent(this,TeacherView.class);
         if(fm.getBackStackEntryCount() == 1)
         {
-            super.onBackPressed();
+            super.startActivity(intent);
         }
         if (fm.getBackStackEntryCount() > 1)
         {
@@ -72,7 +75,7 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
         }
         else
         {
-            super.onBackPressed();
+            super.startActivity(intent);
         }
     }
 

@@ -1,7 +1,10 @@
 package com.example.ammar.teacherandmev10.Activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -23,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 /*
@@ -54,9 +58,9 @@ public class TeacherView extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                System.out.println("LOADING COURSES");
                 Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                courseList = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator,courseList);
+                String [] temp = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
+                Collections.addAll(courseList,temp);
                 adapter = new ArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_1, courseList);
                 progressBar.setVisibility(View.GONE);
                 mListView.setAdapter(adapter);
@@ -64,7 +68,7 @@ public class TeacherView extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError)
             {
-                
+
             }
         });
 
@@ -110,10 +114,10 @@ public class TeacherView extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Course newCourse = new Course();
-                dbAccessFunctions.addChild(courses,newCourse,"course", context);
+                final Course newCourse = new Course();
+                dbAccessFunctions.addChild(courses, newCourse, "course", context);
             }
+
         });
     }
-
 }

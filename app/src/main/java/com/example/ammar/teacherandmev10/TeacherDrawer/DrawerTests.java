@@ -60,19 +60,19 @@ public class DrawerTests extends Fragment { //firstLayout xml
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                System.out.println("-------------------------TESTS-----------------------");
+                System.out.println(dataSnapshot);
+                System.out.println("-------------------------TESTS-----------------------");
+
                 Iterator<DataSnapshot> iterator1 = dataSnapshot.getChildren().iterator();
                 Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
                 Iterator<DataSnapshot> iterator3 = dataSnapshot.getChildren().iterator();
 
-                ArrayList<String> names = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator1,new ArrayList<String>());
-                ArrayList<String> assignedDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator2,new ArrayList<String>(),"assignedDate");
-                ArrayList<String> dueDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator3,new ArrayList<String>(), "dueDate");
+                String [] testNames  = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator1);
+                String [] assDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator2,"assignedDate");
+                String [] dDate  = dbAccessFunctions.getChildrenOfDatabaseValues(iterator3,"dueDate");
 
-                String [] quizNames = names.toArray(new String[0]);
-                String [] assDate = assignedDate.toArray(new String[0]);
-                String [] dDate = dueDate.toArray(new String[0]);
-
-                testAdapter = new CustomAdapterAQTE(getActivity(),quizNames,myView.getContext(),assDate,dDate);
+                testAdapter = new CustomAdapterAQTE(getActivity(),testNames,myView.getContext(),assDate,dDate);
                 testView.setAdapter(testAdapter);
             }
 

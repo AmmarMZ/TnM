@@ -23,11 +23,14 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private static String TAG = "MainActivity";
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private static Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        intent = new Intent(this, RoleSelection.class);
 
         getSupportActionBar().setTitle(R.string.login);
         //set title of activity
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    startActivity(intent);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -85,7 +89,6 @@ public class MainActivity extends AppCompatActivity
             //set check to false
         }
 
-        final Intent intent = new Intent(this, RoleSelection.class);
         //intent after login screen
 
         //login using fireabase authentication

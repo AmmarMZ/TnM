@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.R;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +52,7 @@ public class DrawerAssignments extends Fragment { //firstLayout xml
 
         String courseName = getActivity().getIntent().getStringExtra("courseName");
         assignments = dbAccessFunctions.getAssignments(courseName);
+
         assignments.addValueEventListener(new ValueEventListener()
         {
             @Override
@@ -60,18 +62,13 @@ public class DrawerAssignments extends Fragment { //firstLayout xml
                 Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
                 Iterator<DataSnapshot> iterator3 = dataSnapshot.getChildren().iterator();
 
-                ArrayList<String> assNames = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator1, new ArrayList<String>());
-                ArrayList<String> assignedDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator2, new ArrayList<String>(),"assignedDate");
-                ArrayList<String> dueDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator3, new ArrayList<String>(),"dueDate");
-
-                String [] assignments = assNames.toArray(new String[0]);
-                String [] assDate = assignedDate.toArray(new String[0]);
-                String [] dDate = dueDate.toArray(new String[0]);
+                String [] assignments = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator1);
+                String [] assDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator2,"assignedDate");
+                String [] dDate = dbAccessFunctions.getChildrenOfDatabaseValues(iterator3,"dueDate");
 
                 adapter = new CustomAdapterAQTE(getActivity(),assignments,myView.getContext(),assDate,dDate);
                 assignmentList.setAdapter(adapter);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError)
             {
@@ -80,6 +77,4 @@ public class DrawerAssignments extends Fragment { //firstLayout xml
         });
         return myView;
     }
-
-
 }

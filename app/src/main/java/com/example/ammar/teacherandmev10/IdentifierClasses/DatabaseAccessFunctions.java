@@ -3,6 +3,7 @@ package com.example.ammar.teacherandmev10.IdentifierClasses;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 
@@ -26,9 +27,13 @@ import java.util.Map;
 
 public class DatabaseAccessFunctions
 {
+    private static boolean check = false;
     private static CustomAdapterAQTE customAdapterAQTE;
-    public ArrayList<String> getChildrenOfDatabaseKeys(Iterator<DataSnapshot> iterator, ArrayList<String> toUpdate)
+
+    public String [] getChildrenOfDatabaseKeys(Iterator<DataSnapshot> iterator)
     {
+        ArrayList<String> toUpdate = new ArrayList<>();
+
         if(toUpdate.size() > 0)
             toUpdate.clear();
 
@@ -36,11 +41,13 @@ public class DatabaseAccessFunctions
         {
             toUpdate.add(String.valueOf(iterator.next().getKey()));
         }
-        return toUpdate;
+        return toUpdate.toArray(new String[0]);
     }
 
-    public ArrayList<String> getChildrenOfDatabaseValues(Iterator<DataSnapshot> iterator, ArrayList<String> toUpdate, String key)
+    public String [] getChildrenOfDatabaseValues(Iterator<DataSnapshot> iterator, String key)
     {
+        ArrayList<String> toUpdate = new ArrayList<>();
+
         if(toUpdate.size() > 0)
             toUpdate.clear();
 
@@ -48,35 +55,37 @@ public class DatabaseAccessFunctions
         {
             toUpdate.add(String.valueOf(iterator.next().child(key).getValue()));
         }
-        return toUpdate;
+        return toUpdate.toArray(new String[0]);
     }
 
-    public void addChild(final DatabaseReference db, final Object toAdd, String name, Context context) //called when enroll students is clicked
+    public void addChild(final DatabaseReference db, final Object toAdd, String name, Context context)  //called when enroll students is clicked
     {
         final Map<String,Object> childrenToAdd = new HashMap<>();
+
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setTitle("Add a " + name );
         alert.setMessage("Enter the name of the " + name + " you'd like to add");
         final EditText input = new EditText(context);
         alert.setView(input);
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
                 String name = input.getText().toString();
                 childrenToAdd.put(name, toAdd);
                 db.getRef().updateChildren(childrenToAdd);
-
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                // Cancelled.
             }
         });
-
-        alert.show();
+       alert.show();
     }
 
     public DatabaseReference getCourses()
@@ -124,37 +133,12 @@ public class DatabaseAccessFunctions
         return getChildOfCourses(courseName).child("exams");
     }
 
-    public CustomAdapterAQTE AQTEDatesAndName(DatabaseReference db,final Activity act, final Context context )
+    public void removeAQTEFromStudents(Iterator<DataSnapshot> iterator, String AQTE, String name, DatabaseReference classList)
     {
-        db.addValueEventListener(new ValueEventListener()
+        while (iterator.hasNext())
         {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                Iterator<DataSnapshot> iterator1 = dataSnapshot.getChildren().iterator();
-                Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
-                Iterator<DataSnapshot> iterator3 = dataSnapshot.getChildren().iterator();
-
-                ArrayList<String> assNames = getChildrenOfDatabaseKeys(iterator1, new ArrayList<String>());
-                ArrayList<String> assignedDate = getChildrenOfDatabaseValues(iterator2, new ArrayList<String>(),"assignedDate");
-                ArrayList<String> dueDate = getChildrenOfDatabaseValues(iterator3, new ArrayList<String>(),"dueDate");
-
-                String [] assignments = assNames.toArray(new String[0]);
-                String [] assDate = assignedDate.toArray(new String[0]);
-                String [] dDate = dueDate.toArray(new String[0]);
-
-                customAdapterAQTE = new CustomAdapterAQTE(act,assignments,context,assDate,dDate);
-                //assignmentList.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError)
-            {
-
-            }
-        });
-
-        return customAdapterAQTE;
+            classList.child(iterator.next().getKey()).child(AQTE).child(name).removeValue();
+        }
     }
 
 }

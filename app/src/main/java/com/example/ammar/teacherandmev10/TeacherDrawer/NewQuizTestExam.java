@@ -75,6 +75,7 @@ public class NewQuizTestExam extends Fragment
             nameInput.setHint(R.string.test_hint);
             weightText.setText(R.string.test_weight);
             dateText.setText(R.string.test_date);
+            createQuiz.setText("Create Test");
         }
         if (tag.equals("exams"))
         {
@@ -83,6 +84,7 @@ public class NewQuizTestExam extends Fragment
             nameInput.setHint(R.string.exam_hint);
             weightText.setText(R.string.exam_weight);
             dateText.setText(R.string.exam_date);
+            createQuiz.setText("Create Exam");
         }
 
         Date today = new Date();
@@ -159,7 +161,7 @@ public class NewQuizTestExam extends Fragment
                 }
 
 
-                currentCourse.addValueEventListener(new ValueEventListener() {
+                currentCourse.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentCourse.child(tag).child(name).setValue(toUpload);
@@ -172,7 +174,7 @@ public class NewQuizTestExam extends Fragment
                 });
 
                 final DatabaseReference classList = currentCourse.child("classList");
-                currentCourse.child("classList").addValueEventListener(new ValueEventListener() {
+                currentCourse.child("classList").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
@@ -215,11 +217,4 @@ public class NewQuizTestExam extends Fragment
             classList.child(it.next().getKey()).child(childName).child(name).updateChildren(toUpload);
         }
     }
-
-    private void upload()
-    {
-
-    }
-
-
 }

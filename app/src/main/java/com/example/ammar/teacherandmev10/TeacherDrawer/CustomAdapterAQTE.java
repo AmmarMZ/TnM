@@ -68,7 +68,6 @@ public class CustomAdapterAQTE extends BaseAdapter
     public class Holder
     {
         TextView assignmentName;
-        TextView assignmentDesc;
         ImageButton dots;
     }
 
@@ -261,7 +260,7 @@ public class CustomAdapterAQTE extends BaseAdapter
         this.activity = activity;
     }
 
-    public void removeAQTE(final String name, final String AQTE)
+    private void removeAQTE(final String name, final String AQTE)
     {
 
         final String courseName = getActivity().getIntent().getStringExtra("courseName");
@@ -284,7 +283,7 @@ public class CustomAdapterAQTE extends BaseAdapter
                             public void onDataChange(DataSnapshot dataSnapshot)
                             {
                                 Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                                removeAQTEFromStudents(iterator, AQTE,name,classList);
+                                dbAccessfunctions.removeAQTEFromStudents(iterator, AQTE,name,classList);
                             }
 
                             @Override
@@ -302,20 +301,11 @@ public class CustomAdapterAQTE extends BaseAdapter
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-
-    }
-
-    public void removeAQTEFromStudents(Iterator<DataSnapshot> iterator, String AQTE, String name, DatabaseReference classList)
-    {
-        while (iterator.hasNext())
-        {
-            classList.child(iterator.next().getKey()).child(AQTE).child(name).removeValue();
-        }
     }
 
 
-    public String removeLastChar(String str) {
-        if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == 'x') {
+    private String removeLastChar(String str) {
+        if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == 's') {
             str = str.substring(0, str.length() - 1);
         }
         return str;
