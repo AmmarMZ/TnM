@@ -16,7 +16,8 @@
         <item
             android:id="@+id/nav_fourth_layout"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Attendance" />
+            android:title="Attendance"
+            android:checkableBehavior="single"/>
         <item
             android:id="@+id/nav_fifth_layout"
             android:icon="@drawable/ic_menu_slideshow"
@@ -38,7 +39,6 @@
             android:id="@+id/nav_ninth_layout"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Class Statistics" />
-
 
     </group>
 

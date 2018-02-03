@@ -128,32 +128,33 @@ public class CustomAdapter extends BaseAdapter {
         holder.dots =(ImageButton) rowView.findViewById(R.id.imageButton4);
         courseName = getActivity().getIntent().getStringExtra("courseName");
 
+
+
         final DatabaseReference attendanceRef = dbAccessFunctions.getClassList(courseName);
         navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
 
-        rowView.setOnClickListener(new View.OnClickListener() {
+        rowView.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), StudentView.class));
+            public void onClick(View v)
+            {
+                MenuItem item = getMenuItem();
+                String title = item.getTitle().toString().trim();
+
+                if (title.equals("View Student List") || !item.isChecked())
+                {
+                    Intent intent = new Intent(getActivity(),StudentView.class);
+                    intent.putExtra("courseName",courseName);
+                    intent.putExtra("studentName",result[position]);
+                    getActivity().startActivity(intent);
+                }
             }
         });
         holder.dots.setOnClickListener(new View.OnClickListener() { //change
             @Override
             public void onClick(View v)
             {
-                Menu menu = navigationView.getMenu();
-                int val = 0;
-                MenuItem item;
-                for (int i = 0; i < menu.size(); i++)
-                {
-                    item = menu.getItem(i);
-                    if (item.isChecked())
-                    {
-                        val = i;
-                        break;
-                    }
-                }
-                item = menu.getItem(val);
+                MenuItem item = getMenuItem();
                 String title = item.getTitle().toString().trim();
                 studentName = result[position];
 
@@ -240,7 +241,20 @@ public class CustomAdapter extends BaseAdapter {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-
     }
 
+    public MenuItem getMenuItem()
+    {
+        Menu menu = navigationView.getMenu();
+        int val = 0;
+        MenuItem item;
+        for (int i = 0; i < menu.size(); i++) {
+            item = menu.getItem(i);
+            if (item.isChecked()) {
+                val = i;
+                break;
+            }
+        }
+        return menu.getItem(val);
+    }
 }

@@ -82,8 +82,7 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
                 if (title.equals("View Student List") || !item.isChecked())
                 {
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                    studentListArray = getStudents(iterator);
-                    String[] sLA = studentListArray.toArray(new String[0]);
+                    String[] sLA = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
                     adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length],myView.getContext(),null);
                     adapter.setActivity(getActivity());
                     studentList.setAdapter(adapter);
@@ -96,9 +95,6 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
                 //do nothing
             }
         }); //end of listener
-
-        //listener when wanting to enroll students
-        final NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
 
         enrollButton.setOnClickListener(new View.OnClickListener()
         {
@@ -125,16 +121,4 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
         });
         return myView;
     }
-
-    private ArrayList<String> getStudents(Iterator<DataSnapshot> iterator)
-    {
-        ArrayList<String> studentListArray = new ArrayList<>();
-
-        while (iterator.hasNext())
-        {
-            studentListArray.add(iterator.next().getKey());
-        }
-        return studentListArray;
-    }
-
 }

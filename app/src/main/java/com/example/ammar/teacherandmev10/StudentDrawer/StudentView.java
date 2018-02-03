@@ -1,5 +1,7 @@
 package com.example.ammar.teacherandmev10.StudentDrawer;
 
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,45 +15,58 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.ammar.teacherandmev10.Activities.TeacherView;
 import com.example.ammar.teacherandmev10.R;
+import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerEnrollStudents;
+import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerViewStudents;
 
-public class StudentView extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class StudentView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
+    public static FragmentManager fm;
+    private static String courseName;
+    private static String studentName;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_student);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        fm = getFragmentManager();
+
+        courseName = getIntent().getStringExtra("courseName");
+        studentName = getIntent().getStringExtra("studentName");
+
+        fm.beginTransaction().replace(R.id.content_frame_student, new StudentAssignments()).addToBackStack(null).commit();
+        fm.executePendingTransactions();
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    public void onBackPressed()
+    {
+//        Intent intent = new Intent(this,TeacherView.class);
+//        if(fm.getBackStackEntryCount() == 1)
+//        {
+//            super.startActivity(intent);
+//        }
+//        if (fm.getBackStackEntryCount() > 1)
+//        {
+//            fm.popBackStackImmediate();
+//        }
+//        else
+//        {
+//            super.startActivity(intent);
+//        }
     }
 
     @Override
@@ -62,41 +77,45 @@ public class StudentView extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.stud_nav_assignments)
+        {
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
+        }
+        else if (id == R.id.stud_nav_assignments)
+        {
 
-        } else if (id == R.id.nav_slideshow) {
+        }
+        else if (id == R.id.stud_nav_quizzes)
+        {
 
-        } else if (id == R.id.nav_manage) {
+        }
+        else if (id == R.id.stud_nav_tests)
+        {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        }
+        else if (id == R.id.stud_nav_exams)
+        {
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_student);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
