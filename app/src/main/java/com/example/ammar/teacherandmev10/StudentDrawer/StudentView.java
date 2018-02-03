@@ -54,19 +54,19 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
     @Override
     public void onBackPressed()
     {
-//        Intent intent = new Intent(this,TeacherView.class);
-//        if(fm.getBackStackEntryCount() == 1)
-//        {
-//            super.startActivity(intent);
-//        }
-//        if (fm.getBackStackEntryCount() > 1)
-//        {
-//            fm.popBackStackImmediate();
-//        }
-//        else
-//        {
-//            super.startActivity(intent);
-//        }
+        Intent intent = new Intent(this,TeacherView.class);
+        if(fm.getBackStackEntryCount() == 1)
+        {
+            super.startActivity(intent);
+        }
+        if (fm.getBackStackEntryCount() > 1)
+        {
+            fm.popBackStackImmediate();
+        }
+        else
+        {
+            super.startActivity(intent);
+        }
     }
 
     @Override

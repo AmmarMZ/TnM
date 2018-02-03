@@ -24,9 +24,7 @@ public class StudentAssignments extends Fragment
         myView = inflater.inflate(R.layout.student_assignments, container, false);
 
         String name = getActivity().getIntent().getStringExtra("studentName");
-
         TextView temp = (TextView) myView.findViewById(R.id.tempTextStudent);
-
         temp.setText(name);
 
         return myView;

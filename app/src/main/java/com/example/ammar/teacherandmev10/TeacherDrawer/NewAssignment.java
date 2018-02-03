@@ -98,7 +98,7 @@ public class NewAssignment extends Fragment
                    {
                        String toAdd;
                        if(month < 9)
-                            toAdd = String.valueOf(year)+"-0" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
+                           toAdd = String.valueOf(year)+"-0" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
                        else
                            toAdd = String.valueOf(year)+"-" + String.valueOf(month +1) + "-" + String.valueOf(dayOfMonth);
 
@@ -203,8 +203,9 @@ public class NewAssignment extends Fragment
         while (it.hasNext())
         {
             HashMap<String,Object> toUpload = new HashMap<>();
-            toUpload.put(name+"- Grade",0);
+            toUpload.put("Grade","NA");
             toUpload.put("weight (%)",weight);
+            toUpload.put("submitted", false);
             classList.child(it.next().getKey()).child("assignments").child(name).updateChildren(toUpload);
         }
     }
