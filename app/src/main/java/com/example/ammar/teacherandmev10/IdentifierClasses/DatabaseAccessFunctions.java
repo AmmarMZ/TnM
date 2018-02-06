@@ -141,4 +141,8 @@ public class DatabaseAccessFunctions
         }
     }
 
+    public DatabaseReference getAQTEofStudent(String courseName, String studentName, String AQTE)
+    {
+       return getChildOfCourses(courseName).child("classList").child(studentName).child(AQTE);
+    }
 }
