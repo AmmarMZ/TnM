@@ -19,6 +19,7 @@ import com.example.ammar.teacherandmev10.Activities.TeacherView;
 import com.example.ammar.teacherandmev10.R;
 import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerEnrollStudents;
 import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerViewStudents;
+import com.example.ammar.teacherandmev10.TeacherDrawer.DynamicCourseView;
 
 public class StudentView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -54,7 +55,9 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
     @Override
     public void onBackPressed()
     {
-        Intent intent = new Intent(this,TeacherView.class);
+        Intent intent = new Intent(this,DynamicCourseView.class);
+        intent.putExtra("courseName",courseName);
+
         if(fm.getBackStackEntryCount() == 1)
         {
             super.startActivity(intent);

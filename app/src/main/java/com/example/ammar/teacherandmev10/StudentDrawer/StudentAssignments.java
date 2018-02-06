@@ -70,9 +70,13 @@ public class StudentAssignments extends Fragment
                         {
                             list.add("Grade: " + temp.toString());
                         }
+                        else if (counter == 1)
+                        {
+                            list.add("Handed In: " + temp.toString());
+                        }
                         else
                         {
-                            list.add("Weight: " + temp.toString());
+                            list.add("Weight(%): " + temp.toString());
                         }
                         counter++;
                     }
