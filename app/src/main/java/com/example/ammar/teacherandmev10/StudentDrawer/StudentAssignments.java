@@ -45,10 +45,11 @@ public class StudentAssignments extends Fragment
         myView = inflater.inflate(R.layout.student_assignments, container, false);
 
         String studentName = getActivity().getIntent().getStringExtra("studentName");
-        String courseName = getActivity().getIntent().getStringExtra("courseName");
+        final String courseName = getActivity().getIntent().getStringExtra("courseName");
+        final String AQTE = getActivity().getIntent().getStringExtra("AQTE");
         expListView = (ExpandableListView) myView.findViewById(R.id.studentAssignmentListView);
 
-        final DatabaseReference studentAssignments = dbAccessFunctions.getAQTEofStudent(courseName,studentName, "assignments");
+        final DatabaseReference studentAssignments = dbAccessFunctions.getAQTEofStudent(courseName,studentName, AQTE);
 
         studentAssignments.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -60,28 +61,39 @@ public class StudentAssignments extends Fragment
 
                 for (int i = 0; i < assignmentNames.length; i++)
                 {
-                    Iterator<DataSnapshot> iterator1 = dataSnapshot.child(assignmentNames[i]).getChildren().iterator();
+                    Iterator<DataSnapshot> iterator = dataSnapshot.child(assignmentNames[i]).getChildren().iterator();
+
                     List<String> list = new ArrayList<>();
                     int counter = 0;
-                    while (iterator1.hasNext())
+                    while (iterator.hasNext())
                     {
-                        Object temp = iterator1.next().getValue();
+                        Object temp = iterator.next().getValue();
                         if (counter == 0)
                         {
                             list.add("Grade: " + temp.toString());
                         }
-                        else if (counter == 1)
+                        if (AQTE.equals("assignments"))
                         {
-                            list.add("Handed In: " + temp.toString());
+                            if (counter == 1)
+                            {
+                                list.add("Handed In: " + temp.toString());
+                            }
+                            else
+                            {
+                                list.add("Weight (%): " + temp.toString());
+                            }
                         }
                         else
                         {
-                            list.add("Weight(%): " + temp.toString());
+                            if (counter == 1)
+                            {
+                                list.add("Weight (%): " + temp.toString());
+                            }
+
                         }
                         counter++;
                     }
                     listDataChild.put(assignmentNames[i],list);
-
                 }
                 listAdapter = new ExpandableAQTECustomAdapter(myView.getContext(),listDataHeader,listDataChild);
                 expListView.setAdapter(listAdapter);

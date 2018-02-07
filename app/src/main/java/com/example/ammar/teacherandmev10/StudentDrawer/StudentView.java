@@ -26,6 +26,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
     public static FragmentManager fm;
     private static String courseName;
     private static String studentName;
+    private static String AQTE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,6 +48,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
 
         courseName = getIntent().getStringExtra("courseName");
         studentName = getIntent().getStringExtra("studentName");
+        AQTE = getIntent().getStringExtra("AQTE");
 
         fm.beginTransaction().replace(R.id.content_frame_student, new StudentAssignments()).addToBackStack(null).commit();
         fm.executePendingTransactions();
@@ -101,21 +103,20 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         {
             fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
         }
-        else if (id == R.id.stud_nav_assignments)
-        {
-
-        }
         else if (id == R.id.stud_nav_quizzes)
         {
-
+            getIntent().putExtra("AQTE","quizzes");
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
         }
         else if (id == R.id.stud_nav_tests)
         {
-
+            getIntent().putExtra("AQTE","tests");
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
         }
         else if (id == R.id.stud_nav_exams)
         {
-
+            getIntent().putExtra("AQTE","exams");
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_student);

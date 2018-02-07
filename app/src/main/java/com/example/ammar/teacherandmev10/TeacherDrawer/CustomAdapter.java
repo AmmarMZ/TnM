@@ -144,6 +144,7 @@ public class CustomAdapter extends BaseAdapter {
                 if (title.equals("View Student List") || !item.isChecked())
                 {
                     Intent intent = new Intent(getActivity(),StudentView.class);
+                    intent.putExtra("AQTE","assignments");
                     intent.putExtra("courseName",courseName);
                     intent.putExtra("studentName",result[position]);
                     getActivity().startActivity(intent);
