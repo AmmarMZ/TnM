@@ -20,13 +20,11 @@ import com.example.ammar.teacherandmev10.R;
 import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerEnrollStudents;
 import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerViewStudents;
 import com.example.ammar.teacherandmev10.TeacherDrawer.DynamicCourseView;
-
+//TODO investigate why app crashed when adding new exam to db after erasing all course data
 public class StudentView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     public static FragmentManager fm;
     private static String courseName;
-    private static String studentName;
-    private static String AQTE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,8 +45,6 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         fm = getFragmentManager();
 
         courseName = getIntent().getStringExtra("courseName");
-        studentName = getIntent().getStringExtra("studentName");
-        AQTE = getIntent().getStringExtra("AQTE");
 
         fm.beginTransaction().replace(R.id.content_frame_student, new StudentAssignments()).addToBackStack(null).commit();
         fm.executePendingTransactions();
@@ -75,7 +71,8 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.student_view, menu);
         return true;

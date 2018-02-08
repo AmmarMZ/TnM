@@ -152,7 +152,8 @@ public class NewQuizTestExam extends Fragment
 
                 currentCourse.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
                         currentCourse.child(tag).child(name).setValue(toUpload);
                     }
 

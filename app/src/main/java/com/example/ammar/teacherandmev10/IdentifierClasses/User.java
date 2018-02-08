@@ -16,17 +16,12 @@ public class User {
     private String phoneNumber;
     private Teacher teacher;
     private Parent parent;
-    private FirebaseUser userAccount;
+    private String userID;
     private String firstName;
     private String lastName;
 
     public User() {
-        this.phoneNumber = "empty";
-        this.teacher = new Teacher();
-        this.parent = new Parent();
-        this.userAccount = FirebaseAuth.getInstance().getCurrentUser();
-        this.firstName = "empty";
-        this.lastName = "empty";
+        this.userID = "empty";
     }
 
     public String setUniqueID(String emailAddress) {
@@ -76,11 +71,11 @@ public class User {
         this.parent = parent;
     }
 
-    public FirebaseUser getUserAccount() {
-        return userAccount;
+    public String getUserAccount() {
+        return userID;
     }
 
-    public void setUserAccount(FirebaseUser userAccount) {
-        this.userAccount = userAccount;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

@@ -35,8 +35,7 @@ public class InsertInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_info);
 
-        Toast.makeText(InsertInfo.this, R.string.verify_email,
-                Toast.LENGTH_SHORT).show();
+
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // verify email by sending an email to them
@@ -46,7 +45,8 @@ public class InsertInfo extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "Email sent.");
+                            Toast.makeText(InsertInfo.this, R.string.verify_email,
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -141,16 +141,16 @@ public class InsertInfo extends AppCompatActivity {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setPhoneNumber(phoneNum);
-            user.setUserAccount(FirebaseAuth.getInstance().getCurrentUser());
+            user.setUserID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             if (teacherCheckBox.isChecked())
             {
-                Teacher teacher = new Teacher(UUID.randomUUID().toString());
+                Teacher teacher = new Teacher(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 user.setTeacher(teacher);
             }
             if (parentCheckBox.isChecked())
             {
-                Parent parent = new Parent(UUID.randomUUID().toString());
+                Parent parent = new Parent(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 user.setParent(parent);
             }
 
@@ -167,7 +167,8 @@ public class InsertInfo extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
 
             PopupMenu popupMenu = new PopupMenu(InsertInfo.this,findViewById(R.id.textView9));
             popupMenu.getMenu().add(R.string.sign_wout_reg);
