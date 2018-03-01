@@ -2,6 +2,7 @@ package com.example.ammar.teacherandmev10.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.ammar.teacherandmev10.R;
 
@@ -15,4 +16,5 @@ public class ForgotPass extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_pass);
 
     }
+
 }

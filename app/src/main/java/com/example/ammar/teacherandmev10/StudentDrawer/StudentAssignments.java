@@ -62,7 +62,6 @@ public class StudentAssignments extends Fragment
                 for (int i = 0; i < assignmentNames.length; i++)
                 {
                     Iterator<DataSnapshot> iterator = dataSnapshot.child(assignmentNames[i]).getChildren().iterator();
-
                     List<String> list = new ArrayList<>();
                     int counter = 0;
                     while (iterator.hasNext())
@@ -78,7 +77,7 @@ public class StudentAssignments extends Fragment
                             {
                                 list.add("Handed In: " + temp.toString());
                             }
-                            else
+                            else if (counter > 1)
                             {
                                 list.add("Weight (%): " + temp.toString());
                             }
@@ -89,13 +88,12 @@ public class StudentAssignments extends Fragment
                             {
                                 list.add("Weight (%): " + temp.toString());
                             }
-
                         }
                         counter++;
                     }
                     listDataChild.put(assignmentNames[i],list);
                 }
-                listAdapter = new ExpandableAQTECustomAdapter(myView.getContext(),listDataHeader,listDataChild);
+                listAdapter = new ExpandableAQTECustomAdapter(myView.getContext(),listDataHeader,listDataChild, getActivity());
                 expListView.setAdapter(listAdapter);
             }
 

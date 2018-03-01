@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/customPopup"
+    >
+
+    <TextView
+        android:id="@+id/gradeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grade"
+        android:paddingLeft="10dp"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/gradeEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/handedInTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Handed In"
+        android:paddingLeft="10dp"
+
+        android:textSize="20dp"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

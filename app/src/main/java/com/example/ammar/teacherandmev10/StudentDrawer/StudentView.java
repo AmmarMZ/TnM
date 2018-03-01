@@ -98,6 +98,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
 
         if (id == R.id.stud_nav_assignments)
         {
+            getIntent().putExtra("AQTE","assignments");
             fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
         }
         else if (id == R.id.stud_nav_quizzes)

@@ -115,6 +115,10 @@
     <string name="exam_hint">Midterm Exam</string>
     <string name="new_exam">New Exam</string>
     <string name="title_activity_student_view">StudentView</string>
+    <string-array name="trueOrFalse">
+        <item>True</item>
+        <item>False</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

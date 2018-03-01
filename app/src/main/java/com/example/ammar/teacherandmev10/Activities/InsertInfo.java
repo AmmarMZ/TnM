@@ -35,8 +35,6 @@ public class InsertInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_info);
 
-
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // verify email by sending an email to them
 
