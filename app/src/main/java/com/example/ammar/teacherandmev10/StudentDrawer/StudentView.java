@@ -1,5 +1,6 @@
 package com.example.ammar.teacherandmev10.StudentDrawer;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.example.ammar.teacherandmev10.TeacherDrawer.DynamicCourseView;
 //TODO investigate why app crashed when adding new exam to db after erasing all course data
 public class StudentView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
+
     public static FragmentManager fm;
     private static String courseName;
 
@@ -99,22 +101,23 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         if (id == R.id.stud_nav_assignments)
         {
             getIntent().putExtra("AQTE","assignments");
-            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
+
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments(),"sAssignments").addToBackStack(null).commit();
         }
         else if (id == R.id.stud_nav_quizzes)
         {
             getIntent().putExtra("AQTE","quizzes");
-            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments(),"sQuizzes").addToBackStack(null).commit();
         }
         else if (id == R.id.stud_nav_tests)
         {
             getIntent().putExtra("AQTE","tests");
-            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments(),"sTests").addToBackStack(null).commit();
         }
         else if (id == R.id.stud_nav_exams)
         {
             getIntent().putExtra("AQTE","exams");
-            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments()).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments(),"sExams") .addToBackStack(null).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_student);

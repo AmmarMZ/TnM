@@ -33,7 +33,6 @@ public class StudentAssignments extends Fragment
     private static ExpandableListAdapter listAdapter;
     private static ExpandableListView expListView;
     private static List<String> listDataHeader;
-    private static List<String> studentList = new ArrayList<>();
     private static HashMap<String, List<String>> listDataChild = new HashMap<>();
 
     View myView;
@@ -42,6 +41,7 @@ public class StudentAssignments extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
+
         myView = inflater.inflate(R.layout.student_assignments, container, false);
 
         String studentName = getActivity().getIntent().getStringExtra("studentName");
@@ -93,8 +93,9 @@ public class StudentAssignments extends Fragment
                     }
                     listDataChild.put(assignmentNames[i],list);
                 }
-                listAdapter = new ExpandableAQTECustomAdapter(myView.getContext(),listDataHeader,listDataChild, getActivity());
+                listAdapter = new ExpandableAQTECustomAdapter(myView.getContext(),listDataHeader,listDataChild, getActivity(),studentAssignments, AQTE, getFragmentManager());
                 expListView.setAdapter(listAdapter);
+
             }
 
             @Override
@@ -102,8 +103,6 @@ public class StudentAssignments extends Fragment
 
             }
         });
-
-
         return myView;
     }
 
@@ -118,4 +117,6 @@ public class StudentAssignments extends Fragment
 
         return list;
     }
+
+
 }
