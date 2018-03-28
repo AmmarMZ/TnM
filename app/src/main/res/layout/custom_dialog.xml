@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,28 +11,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Grade"
-        android:paddingLeft="10dp"
-        android:textSize="20dp"/>
+        android:paddingLeft="25dp"
+        android:textSize="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp" />
 
     <EditText
+
         android:id="@+id/gradeEdit"
-        android:layout_width="match_parent"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/gradeTitle"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="22dp"
+        android:inputType="numberDecimal"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/handedInTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Handed In"
-        android:paddingLeft="10dp"
-
-        android:textSize="20dp"/>
+        android:paddingLeft="20dp"
+        android:textSize="20dp"
+        android:layout_below="@+id/gradeEdit"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:textSize="20dp"
+        android:layout_below="@+id/handedInTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
 
 
-</LinearLayout>
+</RelativeLayout>

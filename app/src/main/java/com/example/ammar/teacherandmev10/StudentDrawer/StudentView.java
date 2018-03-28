@@ -48,7 +48,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
 
         courseName = getIntent().getStringExtra("courseName");
 
-        fm.beginTransaction().replace(R.id.content_frame_student, new StudentAssignments()).addToBackStack(null).commit();
+        fm.beginTransaction().replace(R.id.content_frame_student, new StudentAssignments(), "sAssignments").addToBackStack(null).commit();
         fm.executePendingTransactions();
     }
 
@@ -101,7 +101,6 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         if (id == R.id.stud_nav_assignments)
         {
             getIntent().putExtra("AQTE","assignments");
-
             fm.beginTransaction().replace(R.id.content_frame_student,new StudentAssignments(),"sAssignments").addToBackStack(null).commit();
         }
         else if (id == R.id.stud_nav_quizzes)

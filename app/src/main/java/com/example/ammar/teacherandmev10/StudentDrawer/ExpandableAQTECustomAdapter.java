@@ -165,12 +165,28 @@ public class ExpandableAQTECustomAdapter extends BaseExpandableListAdapter
                     @Override
                     public boolean onMenuItemClick(MenuItem item)
                     {
+                        String handedIn = null;
+
                         boolean isAssignment = false;
                         if (AQTE.equals("assignments"))
                         {
                             isAssignment = true;
+                            handedIn = (String) getChild(groupPosition,1);
+                            if (handedIn.length() == 17)
+                            {
+                                handedIn = handedIn.substring(11,16);
+                            }
+                            else
+                            {
+                                handedIn = handedIn.substring(11,15);
+                            }
+
                         }
-                        showPopup(groupPosition, isAssignment);
+                        String grade = (String) getChild(groupPosition,0);
+                        int x = grade.length();
+                        grade = grade.substring(7,x);
+
+                        showPopup(groupPosition, isAssignment, Double.valueOf(grade), handedIn);
                         return true;
                     }
                 });
@@ -201,81 +217,117 @@ public class ExpandableAQTECustomAdapter extends BaseExpandableListAdapter
         return false;
     }
 
-    public void showPopup(final int groupPosition, final boolean isAssignment)
+    public void showPopup(final int groupPosition, final boolean isAssignment, Double grade, String handedIn)
     {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(_context);
         LayoutInflater inflater =  activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
         dialogBuilder.setView(dialogView);
 
+
         final Spinner spinner = (Spinner) dialogView.findViewById(R.id.spinner);
+        final EditText gradeText = (EditText) dialogView.findViewById(R.id.gradeEdit);
+        gradeText.setText(String.valueOf(grade));
+
+        if (gradeText.getText().length() > 0 )
+        {
+            gradeText.setSelection(gradeText.getText().length());
+        }
         TextView handedInTitle = (TextView) dialogView.findViewById(R.id.handedInTitle);
+
         spinner.setVisibility(View.GONE);
         handedInTitle.setVisibility(View.GONE);
+
         if (isAssignment)
         {
             spinner.setVisibility(View.VISIBLE);
             handedInTitle.setVisibility(View.VISIBLE);
         }
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(_context,
-                R.array.trueOrFalse, android.R.layout.simple_spinner_item);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(_context, R.array.trueOrFalse, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        if (handedIn != null)
+        {
+            if (handedIn.equals("True"))
+            {
+                spinner.setSelection(0);
+            }
+            else
+            {
+                spinner.setSelection(1);
+            }
+        }
+
         dialogBuilder.setTitle("Edit items");
-        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener()
+        {
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 final String aqteName = (String) getGroup(groupPosition);
-                boolean check = true;
                 TextView gradeEdit = (TextView) dialogView.findViewById(R.id.gradeEdit);
                 final String grade = gradeEdit.getText().toString().trim();
                 final String handIn;
-                if (!android.text.TextUtils.isDigitsOnly(grade) || grade.length() == 0)
+
+                Double d = Double.parseDouble(grade);
+
+                if (d > 100 || d < 0)
                 {
-                    check = false;
-                    Toast.makeText(_context,"Invalid grade",Toast.LENGTH_SHORT).show();
-                    return;
+                    Toast.makeText(_context,"Invalid Grade",Toast.LENGTH_LONG).show();
                 }
-                else
-                {
-                    double dGrade = Double.parseDouble(grade);
-                    if (dGrade < 0 || dGrade > 100)
-                    {
-                        Toast.makeText(_context,"Invalid grade",Toast.LENGTH_SHORT).show();
-                        check = false;
-                    }
-                }
-                if (isAssignment && check)
+
+                else if (isAssignment)
                 {
                     handIn = spinner.getSelectedItem().toString();
                     dbRef.child(aqteName).child("Grade").setValue(grade);
                     dbRef.child(aqteName).child("submitted").setValue(handIn);
+                    Toast.makeText(_context,"Entry Saved!",Toast.LENGTH_LONG).show();
+
                 }
-                else if (check)
+                else
                 {
                     dbRef.child(aqteName).child("Grade").setValue(grade);
+                    Toast.makeText(_context,"Entry Saved!",Toast.LENGTH_LONG).show();
                 }
 
-                Fragment currentFragment = null;
-                if (AQTE.equals("assignments"))
-                {
-                    currentFragment = fm.findFragmentByTag("sAssignments");
-
-                }
-
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                fragmentTransaction.detach(currentFragment);
-                fragmentTransaction.attach(currentFragment);
-                fragmentTransaction.commit();
+                refreshFragment(isAssignment);
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
                 //pass
             }
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
+
+    public void refreshFragment(boolean isAssignment)
+    {
+        Fragment currentFragment = null;
+        if (isAssignment)
+        {
+            currentFragment = fm.findFragmentByTag("sAssignments");
+        }
+        else
+        {
+            currentFragment = fm.findFragmentByTag("sQuizzes");
+            if (currentFragment == null || !currentFragment.isVisible())
+            {
+                currentFragment = fm.findFragmentByTag("sTests");
+            }
+            if (currentFragment == null || !currentFragment.isVisible())
+            {
+                currentFragment = fm.findFragmentByTag("sExams");
+            }
+        }
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        fragmentTransaction.detach(currentFragment);
+        fragmentTransaction.attach(currentFragment);
+        fragmentTransaction.commit();
+    }
+
 }
