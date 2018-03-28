@@ -32,7 +32,6 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
 
     private static DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
     private NavigationView navigationView;
-    private ArrayList<String> studentListArray = new ArrayList<>();
     private CustomAdapter adapter;
     private View myView;
 
