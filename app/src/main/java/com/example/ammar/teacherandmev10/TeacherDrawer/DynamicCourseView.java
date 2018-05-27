@@ -91,7 +91,6 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
         TextView drawerDescription = (TextView)findViewById(R.id.drawerDescription);
         drawerDescription.setText("Navigation Drawer");
 
-
         ImageView backArrow = (ImageView) findViewById(R.id.backArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +99,6 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
                 finish();
             }
         });
-
-
         getMenuInflater().inflate(R.menu.dynam_course_view, menu);
         return true;
     }
@@ -119,7 +116,8 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
        // android.app.FragmentManager fm = getFragmentManager();

@@ -20,7 +20,7 @@
     <EditText
 
         android:id="@+id/gradeEdit"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/gradeTitle"

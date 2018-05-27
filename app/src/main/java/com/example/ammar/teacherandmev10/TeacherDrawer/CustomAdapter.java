@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
@@ -43,20 +44,15 @@ public class CustomAdapter extends BaseAdapter {
     private static String courseName;
     private static String studentName;
 
-    String [] result;
     //names of students
-
-    String [] status;
+    String [] result;
     //status is used in the attendance ListView, values are Present,Absent,Sick,Other
-
+    String [] status;
     private Context context;
-    int [] imageId;
     //the colour used in the attendance listView, corresponds to present,absent,sick,other
-
+    int [] imageId;
     public static Activity activity;
-    //current activity
     String date;
-    //yyyy-mm-dd
 
     public String getDate() {
         return date;
@@ -111,8 +107,8 @@ public class CustomAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
+    public View getView(final int position, View convertView, ViewGroup parent)
+    {
         final Holder holder = new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.custom_attendance_list, null);
@@ -128,8 +124,6 @@ public class CustomAdapter extends BaseAdapter {
         holder.dots =(ImageButton) rowView.findViewById(R.id.imageButton4);
         courseName = getActivity().getIntent().getStringExtra("courseName");
 
-
-
         final DatabaseReference attendanceRef = dbAccessFunctions.getClassList(courseName);
         navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
 
@@ -141,7 +135,7 @@ public class CustomAdapter extends BaseAdapter {
                 MenuItem item = getMenuItem();
                 String title = item.getTitle().toString().trim();
 
-                if (title.equals("View Student List") || !item.isChecked())
+                if ((title.equals("View Student List") || !item.isChecked() && !title.equals("Attendance")) )
                 {
                     Intent intent = new Intent(getActivity(),StudentView.class);
                     intent.putExtra("AQTE","assignments");
@@ -151,7 +145,9 @@ public class CustomAdapter extends BaseAdapter {
                 }
             }
         });
-        holder.dots.setOnClickListener(new View.OnClickListener() { //change
+
+        //clicking the kabob menu
+        holder.dots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -159,9 +155,11 @@ public class CustomAdapter extends BaseAdapter {
                 String title = item.getTitle().toString().trim();
                 studentName = result[position];
 
-                if (title.equals("View Student List") || !item.isChecked())
+                    // The first menu seen is the "View Student List" menu fragment but the default
+                    // title is "Enroll Students" since that is the 1st menu option
+                    if (title.equals("View Student List") || title.equals("Enroll Students"))
                     {
-                        PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
+                        final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
                         popupMenu.getMenu().add(R.string.remove_student_pop);
                         popupMenu.show();
 
@@ -174,10 +172,11 @@ public class CustomAdapter extends BaseAdapter {
                                 return true;
                             }
                         });
+
                     }
-                    if (title.equals("Attendance"))
+                    else if (title.equals("Attendance"))
                     {
-//                        final String extracted = result[position].trim(); //name of student
+//                      final String extracted = result[position].trim(); //name of student
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
                         popupMenu.getMenu().add(R.string.present);
                         popupMenu.getMenu().add(R.string.sick);
@@ -185,29 +184,31 @@ public class CustomAdapter extends BaseAdapter {
                         popupMenu.getMenu().add(R.string.other);
                         popupMenu.show();
 
-
                         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                         {
                             @Override
                             public boolean onMenuItemClick(final MenuItem item)
                             {
-
-                                        if (popupMenu.getMenu().getItem(0).equals(item)) //present
-                                        {
-                                            updateAttendance(attendanceRef,"Present");
-                                        }
-                                        if (popupMenu.getMenu().getItem(1).equals(item)) //sick
-                                        {
-                                            updateAttendance(attendanceRef,"Sick");
-                                        }
-                                        if (popupMenu.getMenu().getItem(2).equals(item))//absent
-                                        {
-                                            updateAttendance(attendanceRef,"Absent");
-                                        }
-                                        if (popupMenu.getMenu().getItem(3).equals(item))//other
-                                        {
-                                            updateAttendance(attendanceRef,"Other");
-                                        }
+                                //present
+                                if (popupMenu.getMenu().getItem(0).equals(item))
+                                {
+                                    updateAttendance(attendanceRef,"Present");
+                                }
+                                //sick
+                                if (popupMenu.getMenu().getItem(1).equals(item))
+                                {
+                                    updateAttendance(attendanceRef,"Sick");
+                                }
+                                //absent
+                                if (popupMenu.getMenu().getItem(2).equals(item))
+                                {
+                                    updateAttendance(attendanceRef,"Absent");
+                                }
+                                //other
+                                if (popupMenu.getMenu().getItem(3).equals(item))
+                                {
+                                    updateAttendance(attendanceRef,"Other");
+                                }
                                 return true;
                             }
                         });
@@ -249,13 +250,15 @@ public class CustomAdapter extends BaseAdapter {
         Menu menu = navigationView.getMenu();
         int val = 0;
         MenuItem item;
-        for (int i = 0; i < menu.size(); i++) {
+        for (int i = 0; i < menu.size(); i++)
+        {
             item = menu.getItem(i);
-            if (item.isChecked()) {
+            if (item.isChecked() && !item.getTitle().toString().equals(null))
+            {
                 val = i;
                 break;
             }
         }
-        return menu.getItem(val);
+         return menu.getItem(val);
     }
 }

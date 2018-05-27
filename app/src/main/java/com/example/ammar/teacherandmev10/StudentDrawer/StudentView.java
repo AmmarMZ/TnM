@@ -1,11 +1,8 @@
 package com.example.ammar.teacherandmev10.StudentDrawer;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,22 +15,17 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ammar.teacherandmev10.Activities.TeacherView;
 import com.example.ammar.teacherandmev10.R;
-import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerEnrollStudents;
-import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerViewStudents;
+import com.example.ammar.teacherandmev10.TeacherDrawer.DrawerViewAttendance;
 import com.example.ammar.teacherandmev10.TeacherDrawer.DynamicCourseView;
 
-import org.w3c.dom.Text;
 
 //TODO investigate why app crashed when adding new exam to db after erasing all course data
 public class StudentView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-
     public static FragmentManager fm;
     private static String courseName;
     private static String studentName;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,8 +47,6 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
 
         courseName = getIntent().getStringExtra("courseName");
         studentName = getIntent().getStringExtra("studentName");
-
-
 
         fm.beginTransaction().replace(R.id.content_frame_student, new StudentAssignments(), "sAssignments").addToBackStack(null).commit();
         fm.executePendingTransactions();
@@ -109,7 +99,6 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
         return super.onOptionsItemSelected(item);
 
     }
@@ -121,6 +110,11 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.stud_nav_attendance)
+        {
+            getIntent().putExtra("studName",studentName);
+            fm.beginTransaction().replace(R.id.content_frame_student, new DrawerViewAttendance(),studentName).addToBackStack(null).commit();
+        }
         if (id == R.id.stud_nav_assignments)
         {
             getIntent().putExtra("AQTE","assignments");

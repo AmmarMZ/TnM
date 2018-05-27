@@ -80,8 +80,6 @@ public class DrawerCustomAttendanceList extends Fragment
         realDate = realDate.trim();
 
         titleDate.setText("Attendance for:        " + realDate);
-
-
         classList.addValueEventListener(new ValueEventListener()
         {
             @Override
@@ -156,18 +154,18 @@ public class DrawerCustomAttendanceList extends Fragment
             else if (statusInput[i].equals("Present"))
             {
                 colours[i] = R.color.PresentGreen;
-                statusInput[i] = "         Present";
+                statusInput[i] = "Present";
             }
             else if (statusInput[i].equals("Sick"))
             {
                 colours[i] = R.color.SickYellow;
-                statusInput[i] = "         Sick";
+                statusInput[i] = "Sick";
 
             }
             else if (statusInput[i].equals("Absent"))
             {
                 colours[i] = R.color.AbsentRed;
-                statusInput[i] = "         Absent";
+                statusInput[i] = "Absent";
             }
         }
         return colours;

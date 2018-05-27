@@ -32,7 +32,10 @@
         android:text="  Present/absent/sick          "
         android:textSize="14dp"
         android:textStyle="italic"
-        android:layout_marginLeft="130dp" />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+
+        />
 
     <ImageButton
         android:id="@+id/imageButton4"

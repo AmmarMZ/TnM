@@ -49,6 +49,9 @@ public class StudentAssignments extends Fragment
         final String AQTE = getActivity().getIntent().getStringExtra("AQTE");
         expListView = (ExpandableListView) myView.findViewById(R.id.studentAssignmentListView);
 
+
+
+
         final DatabaseReference studentAssignments = dbAccessFunctions.getAQTEofStudent(courseName,studentName, AQTE);
 
         studentAssignments.addListenerForSingleValueEvent(new ValueEventListener()
