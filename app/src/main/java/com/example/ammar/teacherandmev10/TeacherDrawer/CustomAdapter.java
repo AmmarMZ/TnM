@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public class CustomAdapter extends BaseAdapter {
     private NavigationView navigationView;
     private static String courseName;
     private static String studentName;
+    private static String studentNameFromStudentView;
 
     //names of students
     String [] result;
@@ -72,15 +74,42 @@ public class CustomAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater;
 
-    public CustomAdapter(Activity mainActivity, String[] prgmNameList, int[] prgmImages,String [] stats,Context con, String todaysDate)
+    public CustomAdapter(Activity mainActivity, String[] prgmNameList, int[] prgmImages,String [] stats,Context con, String todaysDate, String studentName)
     {
-        result = prgmNameList;
-        status = stats;
-        context = mainActivity;
-        imageId = prgmImages;
-        context = con;
-        date = todaysDate;
-        inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        studentNameFromStudentView = studentName;
+        if (studentName != null)
+        {
+            int index = 0;
+            for (int i = 0; i < prgmNameList.length; i++)
+            {
+                if (prgmNameList[i].equals(studentName))
+                {
+                    index = i;
+                    String temp = prgmNameList[i];
+                    prgmNameList = new String[1];
+                    prgmNameList[0] = temp;
+                    break;
+                }
+            }
+            int tempId = prgmImages[index];
+            prgmImages = new int [1];
+            prgmImages[0] = tempId;
+
+            String tempStat = stats[index];
+            stats = new String [1];
+            stats[0] = tempStat;
+
+        }
+
+
+            result = prgmNameList;
+            status = stats;
+            context = mainActivity;
+            imageId = prgmImages;
+            context = con;
+            date = todaysDate;
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @Override
@@ -151,17 +180,29 @@ public class CustomAdapter extends BaseAdapter {
             @Override
             public void onClick(View v)
             {
-                MenuItem item = getMenuItem();
-                String title = item.getTitle().toString().trim();
-                studentName = result[position];
+                MenuItem item;
+                String title = null;
+                if (studentNameFromStudentView == null)
+                {
+                    item = getMenuItem();
+                    title = item.getTitle().toString().trim();
+                    studentName = result[position];
+                }
+                else
+                {
+                    title = "Attendance";
+                    studentName = studentNameFromStudentView;
+                }
+
 
                     // The first menu seen is the "View Student List" menu fragment but the default
                     // title is "Enroll Students" since that is the 1st menu option
-                    if (title.equals("View Student List") || title.equals("Enroll Students"))
+                    if (title.equals("View Student List") || title.equals("Enroll Students") || studentNameFromStudentView == null)
                     {
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
                         popupMenu.getMenu().add(R.string.remove_student_pop);
                         popupMenu.show();
+                        Toast.makeText(getActivity(),title,Toast.LENGTH_SHORT).show();
 
                         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                         {
@@ -174,7 +215,7 @@ public class CustomAdapter extends BaseAdapter {
                         });
 
                     }
-                    else if (title.equals("Attendance"))
+                    else if (title.equals("Attendance") || studentNameFromStudentView != null)
                     {
 //                      final String extracted = result[position].trim(); //name of student
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);

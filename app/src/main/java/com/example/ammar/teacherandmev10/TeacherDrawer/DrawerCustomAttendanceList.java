@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.Student;
@@ -67,6 +68,7 @@ public class DrawerCustomAttendanceList extends Fragment
         int year = date.getInt("year");
         int month = date.getInt("month");
         int day = date.getInt("day");
+        final String studentName = date.getString("studentName");
 
         if (month < 10 && day < 10)
             realDate = Integer.toString(year) + "-0" + Integer.toString(month) + "-0" + Integer.toString(day);
@@ -90,7 +92,7 @@ public class DrawerCustomAttendanceList extends Fragment
                 namesInput = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
                 statusInput = getAttendance(iterator2);
                 colours = setColours(statusInput);
-                adapter = new CustomAdapter(getActivity(),namesInput,colours,statusInput,context,realDate);
+                adapter = new CustomAdapter(getActivity(),namesInput,colours,statusInput,context,realDate,studentName);
                 attendanceList.setAdapter(adapter);
             }
             @Override

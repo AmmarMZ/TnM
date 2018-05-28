@@ -5,15 +5,6 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/button10"
-        android:layout_toLeftOf="@+id/button10"
-        android:layout_toStartOf="@+id/button10"
-        android:text="@string/no_stud_enroll" />
-
     <Button
         android:id="@+id/button10"
         android:layout_width="wrap_content"

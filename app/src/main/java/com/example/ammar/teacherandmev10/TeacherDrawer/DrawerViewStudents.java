@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
@@ -42,15 +43,9 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
         myView = inflater.inflate(R.layout.drawer_view_students,container,false);
 
         final ListView studentList = (ListView)  myView.findViewById(R.id.studentListView);
-        final TextView message = (TextView) myView.findViewById(R.id.textView20);
         final Button enrollButton = (Button) myView.findViewById(R.id.button10);
-        message.setVisibility(View.GONE);
 
         //listener to update ListView if the Students ever change
-        if (studentList.getAdapter() == null)
-        {
-            message.setVisibility(View.VISIBLE);
-        }
         final Object objReceived = getActivity().getIntent().getStringExtra("courseName");
         String courseName = (String) objReceived;
         DatabaseReference classList = dbAccessFunctions.getClassList(courseName);
@@ -82,9 +77,13 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
                 {
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
                     String[] sLA = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
-                    adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length],myView.getContext(),null);
+                    adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length],myView.getContext(),null,null);
                     adapter.setActivity(getActivity());
                     studentList.setAdapter(adapter);
+                }
+                if (studentList.getAdapter().getCount() == 0)
+                {
+                    Toast.makeText(getActivity(),"No students currently enrolled at this time", Toast.LENGTH_SHORT).show();
                 }
                 //get iterator for all students and then collect all their names in #getStudents
             }
@@ -107,14 +106,14 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
         studentList.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View child) {
-                message.setVisibility(View.GONE); //message to check if classlist is empty or not
             }
 
             @Override
             public void onChildViewRemoved(View parent, View child) {
 
-                if (studentList.getAdapter().getCount() == 0) {
-                    message.setVisibility(View.VISIBLE);
+                if (studentList.getAdapter().getCount() == 0)
+                {
+                    Toast.makeText(getActivity(),"No students currently enrolled at this time", Toast.LENGTH_SHORT).show();
                 }
             }
         });

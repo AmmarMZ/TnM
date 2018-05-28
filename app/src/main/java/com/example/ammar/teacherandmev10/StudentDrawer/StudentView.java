@@ -48,6 +48,12 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         courseName = getIntent().getStringExtra("courseName");
         studentName = getIntent().getStringExtra("studentName");
 
+        char firstLetterOfName = studentName.charAt(0);
+        String[] splitted = studentName.split("\\s+");
+        String lastName = splitted[1];
+
+        getSupportActionBar().setTitle(firstLetterOfName +". " + lastName  + " - Assignments");
+        navigationView.getMenu().getItem(1).setChecked(true);
         fm.beginTransaction().replace(R.id.content_frame_student, new StudentAssignments(), "sAssignments").addToBackStack(null).commit();
         fm.executePendingTransactions();
     }
@@ -112,7 +118,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
 
         if (id == R.id.stud_nav_attendance)
         {
-            getIntent().putExtra("studName",studentName);
+            getIntent().putExtra("studentName",studentName);
             fm.beginTransaction().replace(R.id.content_frame_student, new DrawerViewAttendance(),studentName).addToBackStack(null).commit();
         }
         if (id == R.id.stud_nav_assignments)

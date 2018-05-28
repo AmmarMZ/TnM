@@ -56,7 +56,7 @@ public class DynamicCourseView extends AppCompatActivity implements NavigationVi
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
         fm = fragmentManager;
-
+        navigationView.getMenu().getItem(1).setChecked(true);
         fragmentManager.beginTransaction().replace(R.id.content_frame, new DrawerViewStudents()).addToBackStack(null).commit();
         fragmentManager.executePendingTransactions();
     }
