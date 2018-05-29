@@ -73,17 +73,12 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
 
                 String title = item.getTitle().toString().trim();
 
-                if (title.equals("View Student List") || !item.isChecked())
-                {
+                if (title.equals("View Student List") || !item.isChecked()) {
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
                     String[] sLA = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
-                    adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length],myView.getContext(),null,null);
+                    adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length], myView.getContext(), null, null);
                     adapter.setActivity(getActivity());
                     studentList.setAdapter(adapter);
-                }
-                if (studentList.getAdapter().getCount() == 0)
-                {
-                    Toast.makeText(getActivity(),"No students currently enrolled at this time", Toast.LENGTH_SHORT).show();
                 }
                 //get iterator for all students and then collect all their names in #getStudents
             }
