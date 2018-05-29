@@ -164,7 +164,7 @@ public class CustomAdapter extends BaseAdapter {
                 MenuItem item = getMenuItem();
                 String title = item.getTitle().toString().trim();
 
-                if ((title.equals("View Student List") || !item.isChecked() && !title.equals("Attendance")) )
+                if ((title.equals("View Student List")))
                 {
                     Intent intent = new Intent(getActivity(),StudentView.class);
                     intent.putExtra("AQTE","assignments");
@@ -176,7 +176,8 @@ public class CustomAdapter extends BaseAdapter {
         });
 
         //clicking the kabob menu
-        holder.dots.setOnClickListener(new View.OnClickListener() {
+        holder.dots.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
@@ -193,67 +194,61 @@ public class CustomAdapter extends BaseAdapter {
                     title = "Attendance";
                     studentName = studentNameFromStudentView;
                 }
+                if (title.equals("View Student List"))
+                {
+                    final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
+                    popupMenu.getMenu().add(R.string.remove_student_pop);
+                    popupMenu.show();
 
-
-                    // The first menu seen is the "View Student List" menu fragment but the default
-                    // title is "Enroll Students" since that is the 1st menu option
-                    if (title.equals("View Student List") || title.equals("Enroll Students") || studentNameFromStudentView == null)
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                     {
-                        final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
-                        popupMenu.getMenu().add(R.string.remove_student_pop);
-                        popupMenu.show();
-                        Toast.makeText(getActivity(),title,Toast.LENGTH_SHORT).show();
-
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item)
                         {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item)
-                            {
-                                removeStudent(studentName);
-                                return true;
-                            }
-                        });
+                            removeStudent(studentName);
+                            return true;
+                        }
+                    });
 
-                    }
-                    else if (title.equals("Attendance") || studentNameFromStudentView != null)
+                }
+                else if (title.equals("Attendance") || studentNameFromStudentView != null)
+                {
+                    final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
+                    popupMenu.getMenu().add(R.string.present);
+                    popupMenu.getMenu().add(R.string.sick);
+                    popupMenu.getMenu().add(R.string.absent);
+                    popupMenu.getMenu().add(R.string.other);
+                    popupMenu.show();
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                     {
-//                      final String extracted = result[position].trim(); //name of student
-                        final PopupMenu popupMenu = new PopupMenu(getActivity(), holder.dots);
-                        popupMenu.getMenu().add(R.string.present);
-                        popupMenu.getMenu().add(R.string.sick);
-                        popupMenu.getMenu().add(R.string.absent);
-                        popupMenu.getMenu().add(R.string.other);
-                        popupMenu.show();
-
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                        @Override
+                        public boolean onMenuItemClick(final MenuItem item)
                         {
-                            @Override
-                            public boolean onMenuItemClick(final MenuItem item)
+                            //present
+                            if (popupMenu.getMenu().getItem(0).equals(item))
                             {
-                                //present
-                                if (popupMenu.getMenu().getItem(0).equals(item))
-                                {
-                                    updateAttendance(attendanceRef,"Present");
-                                }
-                                //sick
-                                if (popupMenu.getMenu().getItem(1).equals(item))
-                                {
-                                    updateAttendance(attendanceRef,"Sick");
-                                }
-                                //absent
-                                if (popupMenu.getMenu().getItem(2).equals(item))
-                                {
-                                    updateAttendance(attendanceRef,"Absent");
-                                }
-                                //other
-                                if (popupMenu.getMenu().getItem(3).equals(item))
-                                {
-                                    updateAttendance(attendanceRef,"Other");
-                                }
-                                return true;
+                                updateAttendance(attendanceRef,"Present");
                             }
-                        });
-                    }
+                            //sick
+                            if (popupMenu.getMenu().getItem(1).equals(item))
+                            {
+                                updateAttendance(attendanceRef,"Sick");
+                            }
+                            //absent
+                            if (popupMenu.getMenu().getItem(2).equals(item))
+                            {
+                                updateAttendance(attendanceRef,"Absent");
+                            }
+                            //other
+                            if (popupMenu.getMenu().getItem(3).equals(item))
+                            {
+                                updateAttendance(attendanceRef,"Other");
+                            }
+                            return true;
+                        }
+                    });
+                }
             }
         });
         return rowView;
@@ -294,7 +289,7 @@ public class CustomAdapter extends BaseAdapter {
         for (int i = 0; i < menu.size(); i++)
         {
             item = menu.getItem(i);
-            if (item.isChecked() && !item.getTitle().toString().equals(null))
+            if (item.isChecked())
             {
                 val = i;
                 break;
