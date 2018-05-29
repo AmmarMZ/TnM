@@ -15,15 +15,13 @@ public class Student {
 
     public enum Behaviour{Green,Yellow,Red};
     public enum attendanceStatus{Present,Absent,Sick,Other};
-    private String firstName;
-    private String lastName;
+    private String name;
     private Parent parent;
-    private String uniqueID;    //This ID is how the Parent will access the student through the teacher via the database
+    private String uniqueID;
 
     private HashMap<String,Behaviour> behaviourMap;
     private ArrayList<Quizzes> quizzes;
     private ArrayList<Tests> tests;
-   //   private ArrayList<Object> assignments;
     private ArrayList<Exam> exams;
     private HashMap<String,String> attendance;
 
@@ -35,14 +33,12 @@ public class Student {
 
     public Student(String fName, String lName)
     {
-        this.firstName = fName;
-        this.lastName = lName;
+        this.name = fName + " " + lName;
         quizzes = new ArrayList<>();
         tests = new ArrayList<>();
-     //   assignments = new ArrayList<>();
         exams = new ArrayList<>();
         attendance = new HashMap<>();
-    }// default constructor
+    }
 
     public Parent getParent() {
         return parent;
@@ -56,7 +52,8 @@ public class Student {
         return behaviourMap;
     }
 
-    public void setBehaviourMap(HashMap<String, Behaviour> behaviourMap) {
+    public void setBehaviourMap(HashMap<String, Behaviour> behaviourMap)
+    {
         this.behaviourMap = behaviourMap;
     }
 
@@ -68,14 +65,6 @@ public class Student {
         this.uniqueID = uniqueID;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     public ArrayList<Quizzes> getQuizzes() {
         return quizzes;
     }
@@ -84,28 +73,12 @@ public class Student {
         return tests;
     }
 
-//    public ArrayList<Object> getAssignments() {
-//        return assignments;
-//    }
-
     public ArrayList<Exam> getExams() {
         return exams;
     }
 
-    public HashMap<String, String> getAttendance() {
-        return attendance;
-    }
-
     public ArrayList<String> getNotes() {
         return notes;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public void setQuizzes(ArrayList<Quizzes> quizzes) {
@@ -115,10 +88,6 @@ public class Student {
     public void setTests(ArrayList<Tests> tests) {
         this.tests = tests;
     }
-
-//    public void setAssignments(ArrayList<Object> assignments) {
-//        this.assignments = assignments;
-//    }
 
     public void setExams(ArrayList<Exam> exams) {
         this.exams = exams;
@@ -130,5 +99,15 @@ public class Student {
 
     public void setNotes(ArrayList<String> notes) {
         this.notes = notes;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 }

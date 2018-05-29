@@ -75,7 +75,7 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
 
                 if (title.equals("View Student List") || !item.isChecked()) {
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                    String[] sLA = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
+                    String[] sLA = dbAccessFunctions.getClassListNames(iterator);
                     adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length], myView.getContext(), null, null);
                     adapter.setActivity(getActivity());
                     studentList.setAdapter(adapter);
@@ -85,7 +85,6 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //do nothing
             }
         }); //end of listener
 

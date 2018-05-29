@@ -94,30 +94,31 @@ public class DrawerEnrollStudents extends Fragment //firstLayout xml
                                 tempAttendance.put(dateFormat.format(today),Student.attendanceStatus.Present.toString());
                                 newStud.setAttendance(tempAttendance);
 
-                                //TODO implement behaviour map functionality
+                                //TODO implement behaviour map functionality - not important
                                 HashMap<String,Student.Behaviour> behaviourMap = new HashMap<>();
                                 behaviourMap.put(dateFormat.format(today), Student.Behaviour.Green);
                                 newStud.setBehaviourMap(behaviourMap);
 
-                                newStud.setUniqueID(UUID.randomUUID().toString());
-                                studentsToAdd.put(fName + " " + lName, newStud);
-                                }
+                                String uniqueId = UUID.randomUUID().toString();
+                                newStud.setUniqueID(uniqueId);
+                                studentsToAdd.put(fName + " " + lName + " - " + uniqueId, newStud);
                             }
-                            else
-                            {
-                                Toast.makeText(myView.getContext(), R.string.student_space_missing, Toast.LENGTH_SHORT).show();
-                                check = false;
-                            }
-
                         }
-                        if (check)
+                        else
                         {
-                            classList.updateChildren(studentsToAdd);
-                            Toast.makeText(myView.getContext(), R.string.student_succ_add, Toast.LENGTH_SHORT).show();
-                            input.setText("");
-                            final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                            Toast.makeText(myView.getContext(), R.string.student_space_missing, Toast.LENGTH_SHORT).show();
+                            check = false;
                         }
+
+                    }
+                    if (check)
+                    {
+                        classList.updateChildren(studentsToAdd);
+                        Toast.makeText(myView.getContext(), R.string.student_succ_add, Toast.LENGTH_SHORT).show();
+                        input.setText("");
+                        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    }
                     }
                 }
             });

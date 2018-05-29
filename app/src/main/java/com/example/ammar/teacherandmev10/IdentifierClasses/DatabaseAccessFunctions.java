@@ -44,6 +44,25 @@ public class DatabaseAccessFunctions
         return toUpdate.toArray(new String[0]);
     }
 
+    public String [] getClassListNames(Iterator<DataSnapshot> iterator)
+    {
+        ArrayList<String> toReturn = new ArrayList<>();
+
+        while (iterator.hasNext())
+        {
+            String key = String.valueOf(iterator.next().getKey());
+            int index = key.indexOf(" - ");
+
+            String name = "";
+            if (index != -1)
+            {
+                name = key.substring(0 , index); //this will give abc
+            }
+            toReturn.add(name.trim());
+        }
+        return toReturn.toArray(new String[0]);
+    }
+
     public String [] getChildrenOfDatabaseValues(Iterator<DataSnapshot> iterator, String key)
     {
         ArrayList<String> toUpdate = new ArrayList<>();
