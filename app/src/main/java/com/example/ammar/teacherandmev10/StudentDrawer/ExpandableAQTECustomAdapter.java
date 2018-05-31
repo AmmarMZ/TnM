@@ -172,10 +172,12 @@ public class ExpandableAQTECustomAdapter extends BaseExpandableListAdapter
                         {
                             isAssignment = true;
                             handedIn = (String) getChild(groupPosition,1);
+                            //length of 17 means false
                             if (handedIn.length() == 17)
                             {
                                 handedIn = handedIn.substring(11,16);
                             }
+                            //otherwise its true
                             else
                             {
                                 handedIn = handedIn.substring(11,15);

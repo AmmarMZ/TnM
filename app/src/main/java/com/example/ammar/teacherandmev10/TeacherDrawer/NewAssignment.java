@@ -45,6 +45,7 @@ import java.util.Locale;
 
 public class NewAssignment extends Fragment
 {
+    //TODO duedate and setdate have to be in chronological order
     private DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
     private EditText assignmentNameInput;
     private EditText assignmentWeightInput;
@@ -203,7 +204,7 @@ public class NewAssignment extends Fragment
         while (it.hasNext())
         {
             HashMap<String,Object> toUpload = new HashMap<>();
-            toUpload.put("Grade","NA");
+            toUpload.put("Grade",0);
             toUpload.put("weight (%)",weight);
             toUpload.put("submitted", false);
             classList.child(it.next().getKey()).child("assignments").child(name).updateChildren(toUpload);
