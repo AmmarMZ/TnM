@@ -26,6 +26,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
     public static FragmentManager fm;
     private static String courseName;
     private static String studentName;
+    private static String uId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,6 +48,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
 
         courseName = getIntent().getStringExtra("courseName");
         studentName = getIntent().getStringExtra("studentName");
+        uId = getIntent().getStringExtra("uId");
 
         char firstLetterOfName = studentName.charAt(0);
         String[] splitted = studentName.split("\\s+");
@@ -119,6 +121,7 @@ public class StudentView extends AppCompatActivity implements NavigationView.OnN
         if (id == R.id.stud_nav_attendance)
         {
             getIntent().putExtra("studentName",studentName);
+            getIntent().putExtra("uId",uId);
             fm.beginTransaction().replace(R.id.content_frame_student, new DrawerViewAttendance(),studentName).addToBackStack(null).commit();
         }
         if (id == R.id.stud_nav_assignments)

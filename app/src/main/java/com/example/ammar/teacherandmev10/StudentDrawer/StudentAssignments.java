@@ -44,15 +44,13 @@ public class StudentAssignments extends Fragment
 
         myView = inflater.inflate(R.layout.student_assignments, container, false);
 
-        String studentName = getActivity().getIntent().getStringExtra("studentName");
+        String studentId = getActivity().getIntent().getStringExtra("uId");
         final String courseName = getActivity().getIntent().getStringExtra("courseName");
         final String AQTE = getActivity().getIntent().getStringExtra("AQTE");
         expListView = (ExpandableListView) myView.findViewById(R.id.studentAssignmentListView);
 
 
-
-
-        final DatabaseReference studentAssignments = dbAccessFunctions.getAQTEofStudent(courseName,studentName, AQTE);
+        final DatabaseReference studentAssignments = dbAccessFunctions.getAQTEofStudent(courseName,studentId, AQTE);
 
         studentAssignments.addListenerForSingleValueEvent(new ValueEventListener()
         {

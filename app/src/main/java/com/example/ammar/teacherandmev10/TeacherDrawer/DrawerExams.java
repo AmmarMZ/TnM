@@ -59,9 +59,6 @@ public class DrawerExams extends Fragment { //firstLayout xml
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                System.out.println("-------------------------EXAMS-----------------------");
-                System.out.println(dataSnapshot);
-                System.out.println("-------------------------EXAMS-----------------------");
                 Iterator<DataSnapshot> iterator1 = dataSnapshot.getChildren().iterator();
                 Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
                 Iterator<DataSnapshot> iterator3 = dataSnapshot.getChildren().iterator();

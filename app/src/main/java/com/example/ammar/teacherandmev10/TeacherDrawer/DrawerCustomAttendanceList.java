@@ -69,6 +69,7 @@ public class DrawerCustomAttendanceList extends Fragment
         int month = date.getInt("month");
         int day = date.getInt("day");
         final String studentName = date.getString("studentName");
+        final String uId = date.getString("uId");
 
         if (month < 10 && day < 10)
             realDate = Integer.toString(year) + "-0" + Integer.toString(month) + "-0" + Integer.toString(day);
@@ -89,10 +90,15 @@ public class DrawerCustomAttendanceList extends Fragment
             {
                 Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
                 Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
-                namesInput = dbAccessFunctions.getChildrenOfDatabaseKeys(iterator);
+                Iterator<DataSnapshot> iterator3 = dataSnapshot.getChildren().iterator();
+
+                namesInput = dbAccessFunctions.getClassListNames(iterator);
                 statusInput = getAttendance(iterator2);
                 colours = setColours(statusInput);
-                adapter = new CustomAdapter(getActivity(),namesInput,colours,statusInput,context,realDate,studentName);
+
+                String [] uIds = dbAccessFunctions.getUniqueIds(iterator3);
+
+                adapter = new CustomAdapter(getActivity(),uIds,namesInput,colours,statusInput,context,realDate,studentName,uId);
                 attendanceList.setAdapter(adapter);
             }
             @Override

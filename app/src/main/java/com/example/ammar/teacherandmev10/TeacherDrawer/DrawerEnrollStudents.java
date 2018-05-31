@@ -101,7 +101,7 @@ public class DrawerEnrollStudents extends Fragment //firstLayout xml
 
                                 String uniqueId = UUID.randomUUID().toString();
                                 newStud.setUniqueID(uniqueId);
-                                studentsToAdd.put(fName + " " + lName + " - " + uniqueId, newStud);
+                                studentsToAdd.put(uniqueId, newStud);
                             }
                         }
                         else

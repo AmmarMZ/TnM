@@ -37,6 +37,7 @@ public class DrawerViewAttendance extends Fragment { //firstLayout xml
                 Bundle date = new Bundle();
                 month = month + 1;
                 String studentName = getActivity().getIntent().getStringExtra("studentName");
+                String uId = getActivity().getIntent().getStringExtra("uId");
 
                 date.putInt("year",year);
                 date.putInt("month",month);
@@ -44,6 +45,7 @@ public class DrawerViewAttendance extends Fragment { //firstLayout xml
                 if (studentName != null)
                 {
                     date.putString("studentName",studentName);
+                    date.putString("uId",uId);
                 }
                 next.setArguments(date);
                 if (studentName != null)

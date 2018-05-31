@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
 import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
@@ -229,9 +230,8 @@ public class CustomAdapterAQTE extends BaseAdapter
             e1.printStackTrace();
         }
 
-        SpannableString changeFontSize =  new SpannableString(information);
-        changeFontSize.setSpan(new RelativeSizeSpan(0.5f),assignmentNameArray[position].length(),information.length(),0);
-
+        SpannableString changeFontSize = new SpannableString(information);
+        changeFontSize.setSpan(new RelativeSizeSpan(0.5f), assignmentNameArray[position].length(), information.length(), 0);
         holder.assignmentName.setText(changeFontSize);
         holder.dots.setVisibility(View.VISIBLE);
 

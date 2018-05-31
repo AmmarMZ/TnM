@@ -75,8 +75,12 @@ public class DrawerViewStudents extends Fragment { //firstLayout xml
 
                 if (title.equals("View Student List") || !item.isChecked()) {
                     Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                    String[] sLA = dbAccessFunctions.getClassListNames(iterator);
-                    adapter = new CustomAdapter(getActivity(), sLA, new int[sLA.length], new String[sLA.length], myView.getContext(), null, null);
+                    Iterator<DataSnapshot> iterator2 = dataSnapshot.getChildren().iterator();
+
+                    String [] classList = dbAccessFunctions.getClassListNames(iterator);
+                    String [] uIds = dbAccessFunctions.getUniqueIds(iterator2);
+
+                    adapter = new CustomAdapter(getActivity(), uIds, classList, new int[classList.length], new String[classList.length], myView.getContext(), null, null,null);
                     adapter.setActivity(getActivity());
                     studentList.setAdapter(adapter);
                 }

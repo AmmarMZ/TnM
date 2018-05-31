@@ -16,20 +16,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ammar.teacherandmev10.IdentifierClasses.DatabaseAccessFunctions;
-import com.example.ammar.teacherandmev10.IdentifierClasses.ObjectWrapperForBinder;
 import com.example.ammar.teacherandmev10.R;
 import com.example.ammar.teacherandmev10.StudentDrawer.StudentView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Ammar on 2017-05-21.
@@ -43,18 +34,22 @@ public class CustomAdapter extends BaseAdapter {
     private  static DatabaseAccessFunctions dbAccessFunctions = new DatabaseAccessFunctions();
     private NavigationView navigationView;
     private static String courseName;
-    private static String studentName;
     private static String studentNameFromStudentView;
+    private static String uIdFromStudentView;
 
-    //names of students
-    String [] result;
+    private static String uId;
+
+    private String [] classList;
     //status is used in the attendance ListView, values are Present,Absent,Sick,Other
-    String [] status;
     private Context context;
     //the colour used in the attendance listView, corresponds to present,absent,sick,other
-    int [] imageId;
+    private int [] imageId;
     public static Activity activity;
-    String date;
+    private String date;
+    private String [] status;
+    private String [] uniqueIds;
+
+
 
     public String getDate() {
         return date;
@@ -74,47 +69,49 @@ public class CustomAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater;
 
-    public CustomAdapter(Activity mainActivity, String[] prgmNameList, int[] prgmImages,String [] stats,Context con, String todaysDate, String studentName)
+    public CustomAdapter(Activity mainActivity, String [] uIds,  String[] classList, int[] statusImages,String [] stats,Context con, String todaysDate, String studentName, String uIdFSV)
     {
         studentNameFromStudentView = studentName;
+        uIdFromStudentView = uIdFSV;
         if (studentName != null)
         {
             int index = 0;
-            for (int i = 0; i < prgmNameList.length; i++)
+            for (int i = 0; i < classList.length; i++)
             {
-                if (prgmNameList[i].equals(studentName))
+                if (classList[i].equals(studentName))
                 {
                     index = i;
-                    String temp = prgmNameList[i];
-                    prgmNameList = new String[1];
-                    prgmNameList[0] = temp;
+                    String temp = classList[i];
+                    classList = new String[1];
+                    classList[0] = temp;
                     break;
                 }
             }
-            int tempId = prgmImages[index];
-            prgmImages = new int [1];
-            prgmImages[0] = tempId;
+            int tempImageId = statusImages[index];
+            statusImages = new int [1];
+            statusImages[0] = tempImageId;
 
             String tempStat = stats[index];
             stats = new String [1];
             stats[0] = tempStat;
 
+            String tempId = uIds[index];
+            uIds = new String [1];
+            uIds[0] = tempId;
         }
-
-
-            result = prgmNameList;
-            status = stats;
-            context = mainActivity;
-            imageId = prgmImages;
-            context = con;
-            date = todaysDate;
+            this.classList = classList;
+            this.status = stats;
+            this.context = mainActivity;
+            this.imageId = statusImages;
+            this.context = con;
+            this.date = todaysDate;
+            this.uniqueIds = uIds;
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override
     public int getCount() {
-        return result.length;
+        return classList.length;
     }
 
     @Override
@@ -146,7 +143,7 @@ public class CustomAdapter extends BaseAdapter {
         holder.status=(TextView) rowView.findViewById(R.id.pres_abs_sick);
         holder.colour =(ImageView) rowView.findViewById(R.id.imageView1);
 
-        holder.studentName.setText(result[position]);
+        holder.studentName.setText(classList[position]);
         holder.colour.setImageResource(imageId[position]);
         holder.status.setText(status[position]);
 
@@ -169,7 +166,8 @@ public class CustomAdapter extends BaseAdapter {
                     Intent intent = new Intent(getActivity(),StudentView.class);
                     intent.putExtra("AQTE","assignments");
                     intent.putExtra("courseName",courseName);
-                    intent.putExtra("studentName",result[position]);
+                    intent.putExtra("studentName", classList[position]);
+                    intent.putExtra("uId", uniqueIds[position]);
                     getActivity().startActivity(intent);
                 }
             }
@@ -187,12 +185,12 @@ public class CustomAdapter extends BaseAdapter {
                 {
                     item = getMenuItem();
                     title = item.getTitle().toString().trim();
-                    studentName = result[position];
+                    uId = uniqueIds[position];
                 }
                 else
                 {
                     title = "Attendance";
-                    studentName = studentNameFromStudentView;
+                    uId = uIdFromStudentView;
                 }
                 if (title.equals("View Student List"))
                 {
@@ -205,7 +203,7 @@ public class CustomAdapter extends BaseAdapter {
                         @Override
                         public boolean onMenuItemClick(MenuItem item)
                         {
-                            removeStudent(studentName);
+                            removeStudent(uniqueIds[position]);
                             return true;
                         }
                     });
@@ -256,7 +254,7 @@ public class CustomAdapter extends BaseAdapter {
 
     public void updateAttendance(DatabaseReference db, String type)
     {
-        db.child(studentName).child("attendance").child(getDate()).setValue(type);
+        db.child(uId).child("attendance").child(getDate()).setValue(type);
         this.notifyDataSetChanged();
     }
     public void removeStudent(final String student)

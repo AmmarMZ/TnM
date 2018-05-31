@@ -50,14 +50,7 @@ public class DatabaseAccessFunctions
 
         while (iterator.hasNext())
         {
-            String key = String.valueOf(iterator.next().getKey());
-            int index = key.indexOf(" - ");
-
-            String name = "";
-            if (index != -1)
-            {
-                name = key.substring(0 , index); //this will give abc
-            }
+            String name = (String) iterator.next().child("name").getValue();
             toReturn.add(name.trim());
         }
         return toReturn.toArray(new String[0]);
@@ -75,6 +68,18 @@ public class DatabaseAccessFunctions
             toUpdate.add(String.valueOf(iterator.next().child(key).getValue()));
         }
         return toUpdate.toArray(new String[0]);
+    }
+
+    public String [] getUniqueIds(Iterator<DataSnapshot> iterator)
+    {
+        ArrayList<String> toReturn = new ArrayList<>();
+
+        while (iterator.hasNext())
+        {
+            String key = iterator.next().getKey();
+            toReturn.add(key.trim());
+        }
+        return toReturn.toArray(new String[0]);
     }
 
     public void addChild(final DatabaseReference db, final Object toAdd, String name, Context context)  //called when enroll students is clicked
